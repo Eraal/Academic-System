@@ -7,278 +7,919 @@
     <link href="https://cdnjs.cloudflare.com/ajax/libs/tailwindcss/2.2.19/tailwind.min.css" rel="stylesheet">
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css" rel="stylesheet">
     <style>
-        .bg-custom-blue { background-color: #2A4E92; }
+        @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap');
+        
+        body {
+            font-family: 'Poppins', sans-serif;
+        }
+        
+        .bg-custom-blue { background-color: #1A3A7C; }
         .bg-custom-brown { background-color: #723E2C; }
         .bg-custom-green { background-color: #51B63F; }
         .bg-custom-light-blue { background-color: #62BEE3; }
         .bg-custom-yellow { background-color: #FAC801; }
-        .text-custom-blue { color: #2A4E92; }
+        .text-custom-blue { color: #1A3A7C; }
         .text-custom-brown { color: #723E2C; }
         .text-custom-green { color: #51B63F; }
         .text-custom-light-blue { color: #62BEE3; }
         .text-custom-yellow { color: #FAC801; }
-        .border-custom-blue { border-color: #2A4E92; }
+        .border-custom-blue { border-color: #1A3A7C; }
         .border-custom-green { border-color: #51B63F; }
         .border-custom-yellow { border-color: #FAC801; }
         .border-custom-brown { border-color: #723E2C; }
+        
+        .sidebar-active {
+            position: relative;
+            background-color: rgba(255, 255, 255, 0.15);
+            font-weight: 500;
+        }
+        
+        .sidebar-active::before {
+            content: "";
+            position: absolute;
+            left: 0;
+            top: 0;
+            height: 100%;
+            width: 4px;
+            background-color: #FAC801;
+        }
+        
+        .card-hover:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
+        }
+        
+        .progress-bar {
+            height: 6px;
+            border-radius: 3px;
+            background-color: #E5E7EB;
+            overflow: hidden;
+        }
+        
+        .progress-fill {
+            height: 100%;
+            border-radius: 3px;
+        }
+        
+        .animated-bg {
+            background: linear-gradient(270deg, #1A3A7C, #2B4D8F);
+            background-size: 400% 400%;
+            animation: gradient 15s ease infinite;
+        }
+        
+        @keyframes gradient {
+            0% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+            100% { background-position: 0% 50%; }
+        }
+        
+        .status-badge {
+            display: inline-flex;
+            align-items: center;
+            padding: 0.5rem 0.75rem;
+            border-radius: 9999px;
+            font-weight: 500;
+            font-size: 0.75rem;
+            line-height: 1rem;
+        }
+        
+        .status-badge i {
+            margin-right: 0.375rem;
+        }
+        
+        .top-nav-decoration {
+            position: absolute;
+            top: 0;
+            right: 0;
+            height: 100%;
+            width: 30%;
+            background: linear-gradient(90deg, rgba(26, 58, 124, 0), rgba(26, 58, 124, 0.1));
+            z-index: 1;
+        }
+
+        .timeline-item:hover {
+            transform: translateX(5px);
+            transition: transform 0.3s ease;
+        }
+
+        .timeline-badge {
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+        
+        .timeline-item:hover .timeline-badge {
+            transform: scale(1.1);
+            box-shadow: 0 0 15px rgba(0, 0, 0, 0.2);
+        }
+
+        .table-row-hover:hover {
+            background-color: rgba(26, 58, 124, 0.05);
+        }
+
+        .filter-btn {
+            transition: all 0.2s ease;
+        }
+
+        .filter-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+        }
+
+        .filter-btn.active {
+            background-color: #1A3A7C;
+            color: white;
+        }
     </style>
 </head>
 <body class="bg-gray-100">
     <div class="flex h-screen">
         <!-- Sidebar -->
-        <div class="bg-custom-blue text-white w-64 flex-shrink-0 hidden md:block">
-            <div class="p-4 text-center border-b border-blue-700">
-                <h2 class="font-bold text-xl">Academic System</h2>
-                <p class="text-sm text-custom-yellow mt-1">Role: Faculty</p>
+        <div class="animated-bg text-white w-72 flex-shrink-0 hidden md:flex md:flex-col shadow-lg">
+            <div class="p-6 flex items-center space-x-3 border-b border-opacity-20 border-blue-300">
+                <div class="bg-white rounded-lg p-2 shadow-md">
+                    <svg class="w-8 h-8 text-custom-blue" fill="currentColor" viewBox="0 0 20 20">
+                        <path d="M10.394 2.08a1 1 0 00-.788 0L3.493 5.05a1 1 0 000 1.79l6.113 2.97a1 1 0 00.788 0l6.113-2.97a1 1 0 000-1.79l-6.113-2.97z"></path>
+                        <path d="M3.05 7.097a1 1 0 00-1.45.9v5.322a1 1 0 00.55.851l6.113 2.97a1 1 0 00.9 0l6.113-2.97a1 1 0 00.55-.851V7.997a1 1 0 00-1.45-.9l-5.714 2.775a1 1 0 01-.9 0L3.05 7.097z"></path>
+                    </svg>
+                </div>
+                <div>
+                    <h2 class="font-bold text-xl tracking-wide">AcadSystem</h2>
+                    <div class="flex items-center mt-1">
+                        <span class="h-2 w-2 bg-green-400 rounded-full"></span>
+                        <p class="text-xs font-medium ml-1.5 text-blue-100">Faculty Portal</p>
+                    </div>
+                </div>
             </div>
-            <nav class="mt-6">
-                <ul>
-                    <li class="mb-1">
-                        <a href="faculty-dashboard.html" class="block py-3 px-4 hover:bg-blue-800 transition-colors">
-                            <i class="fas fa-tachometer-alt mr-2"></i> Dashboard
-                        </a>
-                    </li>
-                    <li class="mb-1">
-                        <a href="faculty-upload.html" class="block py-3 px-4 hover:bg-blue-800 transition-colors">
-                            <i class="fas fa-upload mr-2"></i> Upload Deliverables
-                        </a>
-                    </li>
-                    <li class="mb-1">
-                        <a href="faculty-history.html" class="block py-3 px-4 bg-blue-800 transition-colors">
-                            <i class="fas fa-history mr-2"></i> Submission History
-                        </a>
-                    </li>
-                    <li class="mb-1">
-                        <a href="loginpage.html" class="block py-3 px-4 hover:bg-blue-800 transition-colors">
-                            <i class="fas fa-sign-out-alt mr-2"></i> Logout
-                        </a>
-                    </li>
-                </ul>
-            </nav>
+            
+            <div class="px-3 py-6 flex-1">
+                <div class="mb-3 px-3">
+                    <h3 class="text-xs uppercase tracking-wider text-blue-200 font-semibold">Main Navigation</h3>
+                </div>
+                <nav>
+                    <ul class="space-y-1">
+                        <li>
+                            <a href="faculty-dashboard.html" class="flex items-center py-3 px-4 rounded-lg text-blue-100 hover:bg-white hover:bg-opacity-10 transition-all duration-200">
+                                <i class="fas fa-tachometer-alt w-5 text-center"></i>
+                                <span class="ml-3">Dashboard</span>
+                            </a>
+                        </li>
+                        <li>
+                            <a href="faculty-upload.html" class="flex items-center py-3 px-4 rounded-lg text-blue-100 hover:bg-white hover:bg-opacity-10 transition-all duration-200">
+                                <i class="fas fa-upload w-5 text-center"></i>
+                                <span class="ml-3">Upload Deliverables</span>
+                            </a>
+                        </li>
+                        <li>
+                            <a href="faculty-history.html" class="sidebar-active flex items-center py-3 px-4 rounded-lg text-white transition-all duration-200">
+                                <i class="fas fa-history w-5 text-center"></i>
+                                <span class="ml-3">Submission History</span>
+                            </a>
+                        </li>
+                        <li class="pt-6 mt-6 border-t border-blue-800">
+                            <a href="loginpage.html" class="flex items-center py-3 px-4 rounded-lg text-blue-100 hover:bg-white hover:bg-opacity-10 transition-all duration-200">
+                                <i class="fas fa-sign-out-alt w-5 text-center"></i>
+                                <span class="ml-3">Logout</span>
+                            </a>
+                        </li>
+                    </ul>
+                </nav>
+            </div>
         </div>
 
         <!-- Main Content -->
         <div class="flex-1 flex flex-col overflow-hidden">
             <!-- Top Navigation -->
-            <header class="bg-white shadow-sm">
-                <div class="flex items-center justify-between p-4">
+            <header class="bg-white shadow-md relative z-10">
+                <div class="top-nav-decoration"></div>
+                <div class="flex items-center justify-between px-6 py-4">
                     <div class="flex items-center">
-                        <button class="md:hidden mr-4 text-gray-600">
+                        <button class="md:hidden mr-4 text-gray-600 focus:outline-none">
                             <i class="fas fa-bars"></i>
                         </button>
-                        <h1 class="text-xl font-semibold text-gray-800">Submission History</h1>
+                        <div>
+                            <h1 class="text-xl font-bold text-gray-800">Submission History</h1>
+                            <div class="flex items-center text-sm text-gray-500 mt-0.5">
+                                <i class="fas fa-home mr-1.5"></i>
+                                <span>Dashboard</span>
+                                <i class="fas fa-chevron-right mx-2 text-xs"></i>
+                                <span class="text-custom-blue font-medium">Submission History</span>
+                            </div>
+                        </div>
                     </div>
-                    <div>
-                        <span class="bg-custom-green text-white py-1 px-3 rounded-full text-sm">
-                            Faculty
-                        </span>
+                    <div class="flex items-center space-x-4">
+                        <div class="relative">
+                            <button class="relative p-1 text-gray-400 hover:text-gray-600 focus:outline-none">
+                                <i class="fas fa-bell text-lg"></i>
+                                <span class="absolute top-0 right-0 h-2 w-2 rounded-full bg-red-500"></span>
+                            </button>
+                        </div>
+                        <div class="relative">
+                            <button class="relative p-1 text-gray-400 hover:text-gray-600 focus:outline-none">
+                                <i class="fas fa-envelope text-lg"></i>
+                                <span class="absolute top-0 right-0 h-2 w-2 rounded-full bg-custom-yellow"></span>
+                            </button>
+                        </div>
+                        <div class="border-l border-gray-200 h-8 mx-2"></div>
                     </div>
+                </div>
+                
+                <!-- Page Progress Indicator -->
+                <div class="h-1 w-full bg-gray-100">
+                    <div class="h-full bg-custom-blue w-full"></div>
                 </div>
             </header>
 
             <!-- Content Area -->
             <main class="flex-1 overflow-y-auto p-6">
-                <!-- Filters -->
-                <div class="mb-6 bg-white p-4 rounded shadow">
-                    <div class="flex flex-col md:flex-row md:items-center md:justify-between">
-                        <div class="flex flex-col md:flex-row md:items-center mb-4 md:mb-0">
-                            <label class="mr-3 mb-2 md:mb-0 font-medium">Filter by:</label>
-                            <select class="border rounded p-2 mr-3 mb-2 md:mb-0">
-                                <option>All Deliverables</option>
-                                <option>Syllabus</option>
-                                <option>SLM</option>
-                                <option>TOS</option>
-                                <option>Exams</option>
-                            </select>
-                            <select class="border rounded p-2 mr-3 mb-2 md:mb-0">
-                                <option>All Status</option>
-                                <option>Submitted</option>
-                                <option>Approved</option>
-                                <option>Needs Revision</option>
-                            </select>
-                        </div>
+                <!-- Summary Stats -->
+                <div class="grid grid-cols-1 md:grid-cols-4 gap-6 mb-6">
+                    <div class="bg-white rounded-xl shadow-sm border border-gray-100 p-5 transition-all duration-300 hover:shadow-md card-hover">
                         <div class="flex items-center">
-                            <input type="text" placeholder="Search courses" class="border rounded p-2 w-full">
+                            <div class="bg-blue-100 p-3 rounded-full">
+                                <i class="fas fa-file-upload text-custom-blue text-lg"></i>
+                            </div>
+                            <div class="ml-4">
+                                <h3 class="text-sm text-gray-500">Total Submissions</h3>
+                                <p class="text-xl font-bold text-gray-800">24</p>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="bg-white rounded-xl shadow-sm border border-gray-100 p-5 transition-all duration-300 hover:shadow-md card-hover">
+                        <div class="flex items-center">
+                            <div class="bg-green-100 p-3 rounded-full">
+                                <i class="fas fa-check-circle text-custom-green text-lg"></i>
+                            </div>
+                            <div class="ml-4">
+                                <h3 class="text-sm text-gray-500">Approved</h3>
+                                <p class="text-xl font-bold text-gray-800">16</p>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="bg-white rounded-xl shadow-sm border border-gray-100 p-5 transition-all duration-300 hover:shadow-md card-hover">
+                        <div class="flex items-center">
+                            <div class="bg-yellow-100 p-3 rounded-full">
+                                <i class="fas fa-spinner text-custom-yellow text-lg"></i>
+                            </div>
+                            <div class="ml-4">
+                                <h3 class="text-sm text-gray-500">Pending</h3>
+                                <p class="text-xl font-bold text-gray-800">5</p>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="bg-white rounded-xl shadow-sm border border-gray-100 p-5 transition-all duration-300 hover:shadow-md card-hover">
+                        <div class="flex items-center">
+                            <div class="bg-red-100 p-3 rounded-full">
+                                <i class="fas fa-undo text-custom-brown text-lg"></i>
+                            </div>
+                            <div class="ml-4">
+                                <h3 class="text-sm text-gray-500">Needs Revision</h3>
+                                <p class="text-xl font-bold text-gray-800">3</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Filters -->
+                <div class="bg-white rounded-xl shadow-sm border border-gray-100 p-6 mb-6">
+                    <div class="flex flex-col lg:flex-row lg:items-center lg:justify-between">
+                        <div class="flex flex-col sm:flex-row sm:items-center mb-4 lg:mb-0 space-y-3 sm:space-y-0 sm:space-x-2">
+                            <h2 class="text-lg font-semibold text-gray-800 whitespace-nowrap">Filter by:</h2>
+                            <div class="flex flex-wrap gap-2">
+                                <button class="filter-btn active bg-custom-blue text-white px-4 py-2 rounded-lg text-sm font-medium">
+                                    All
+                                </button>
+                                <button class="filter-btn bg-gray-100 text-gray-700 px-4 py-2 rounded-lg text-sm font-medium hover:bg-gray-200">
+                                    Syllabus
+                                </button>
+                                <button class="filter-btn bg-gray-100 text-gray-700 px-4 py-2 rounded-lg text-sm font-medium hover:bg-gray-200">
+                                    SLM
+                                </button>
+                                <button class="filter-btn bg-gray-100 text-gray-700 px-4 py-2 rounded-lg text-sm font-medium hover:bg-gray-200">
+                                    TOS
+                                </button>
+                                <button class="filter-btn bg-gray-100 text-gray-700 px-4 py-2 rounded-lg text-sm font-medium hover:bg-gray-200">
+                                    Exams
+                                </button>
+                            </div>
+                        </div>
+                        <div class="flex items-center mt-4 lg:mt-0">
+                            <div class="relative">
+                                <input type="text" placeholder="Search submissions..." class="pl-10 pr-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-custom-blue focus:border-transparent w-full" />
+                                <i class="fas fa-search absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400"></i>
+                            </div>
+                            <div class="ml-2">
+                                <button class="bg-gray-100 text-gray-700 p-2 rounded-lg hover:bg-gray-200">
+                                    <i class="fas fa-sliders-h"></i>
+                                </button>
+                            </div>
                         </div>
                     </div>
                 </div>
 
                 <!-- Timeline View -->
-                <div class="bg-white rounded shadow mb-6">
-                    <div class="border-b p-4">
-                        <h2 class="text-lg font-semibold">Timeline View</h2>
+                <div class="bg-white rounded-xl shadow-sm border border-gray-100 overflow-hidden mb-6">
+                    <div class="px-6 py-4 border-b border-gray-100 flex justify-between items-center">
+                        <h2 class="text-lg font-bold text-gray-800 flex items-center">
+                            <i class="fas fa-stream mr-2 text-custom-blue"></i>
+                            Submission Timeline
+                        </h2>
+                        <div class="flex items-center text-sm">
+                            <span class="text-gray-500 mr-2">Academic Year:</span>
+                            <span class="font-medium">2024-2025</span>
+                            <span class="mx-2 text-gray-300">|</span>
+                            <span class="text-gray-500 mr-2">Term:</span>
+                            <span class="font-medium">2nd Semester</span>
+                        </div>
                     </div>
                     
                     <div class="p-6">
                         <!-- Timeline -->
                         <div class="relative">
                             <!-- Vertical Line -->
-                            <div class="absolute left-5 top-0 bottom-0 w-0.5 bg-gray-300"></div>
+                            <div class="absolute left-5 top-0 bottom-0 w-0.5 bg-gray-200"></div>
                             
                             <!-- Timeline Item 1 -->
-                            <div class="flex mb-8 relative">
-                                <div class="flex-shrink-0 w-10 h-10 rounded-full bg-custom-green flex items-center justify-center z-10">
+                            <div class="flex mb-8 relative timeline-item">
+                                <div class="flex-shrink-0 w-10 h-10 rounded-full bg-custom-green flex items-center justify-center z-10 timeline-badge">
                                     <i class="fas fa-check text-white"></i>
                                 </div>
-                                <div class="ml-6">
-                                    <div class="bg-gray-50 p-4 rounded shadow-sm border-l-4 border-custom-green">
+                                <div class="ml-6 flex-1">
+                                    <div class="bg-gradient-to-r from-gray-50 to-white p-5 rounded-xl shadow-sm border-l-4 border-custom-green">
                                         <div class="flex flex-col md:flex-row md:items-center md:justify-between mb-2">
-                                            <h3 class="font-medium">CS 101 Syllabus - Approved</h3>
-                                            <span class="text-sm text-gray-500">April 15, 2025 • 2:30 PM</span>
+                                            <h3 class="font-medium text-custom-blue flex items-center">
+                                                <i class="fas fa-book mr-2"></i>
+                                                CS 101 Syllabus - Approved
+                                            </h3>
+                                            <span class="text-sm text-gray-500 flex items-center mt-1 md:mt-0">
+                                                <i class="far fa-clock mr-1.5"></i>
+                                                April 15, 2025 • 2:30 PM
+                                            </span>
                                         </div>
                                         <p class="text-gray-600 mb-3">Your CS 101 Syllabus has been approved by the Dean.</p>
-                                        <div class="text-sm text-custom-blue">
-                                            <i class="fas fa-comment-alt mr-1"></i> Feedback: "Excellent work. Well structured and follows all guidelines."
+                                        <div class="text-sm bg-green-50 p-3 rounded-lg border border-green-100 mb-3">
+                                            <div class="flex">
+                                                <i class="fas fa-comment-alt mt-1 text-custom-green"></i>
+                                                <div class="ml-2">
+                                                    <p class="text-gray-700">"Excellent work. Well structured and follows all guidelines."</p>
+                                                    <div class="flex items-center mt-2 text-xs text-custom-green">
+                                                        <img src="/api/placeholder/24/24" class="h-6 w-6 rounded-full mr-2" alt="Dean Smith" />
+                                                        <span class="font-medium">Dean Smith</span>
+                                                        <span class="mx-1">•</span>
+                                                        <span>April 15, 2025</span>
+                                                    </div>
+                                                </div>
+                                            </div>
                                         </div>
-                                        <div class="mt-3">
-                                            <button class="text-custom-blue hover:underline text-sm mr-3">
-                                                <i class="fas fa-download mr-1"></i> Download
+                                        <div class="flex flex-wrap items-center gap-2">
+                                            <button class="bg-gray-100 text-custom-blue hover:bg-gray-200 px-4 py-2 rounded-lg text-sm font-medium transition-colors flex items-center">
+                                                <i class="fas fa-download mr-1.5"></i> Download
                                             </button>
-                                            <button class="text-custom-blue hover:underline text-sm">
-                                                <i class="fas fa-eye mr-1"></i> View
+                                            <button class="bg-gray-100 text-custom-blue hover:bg-gray-200 px-4 py-2 rounded-lg text-sm font-medium transition-colors flex items-center">
+                                                <i class="fas fa-eye mr-1.5"></i> View
                                             </button>
+                                            <div class="flex-grow"></div>
+                                            <span class="bg-green-100 text-green-800 px-3 py-1 rounded-full text-xs font-medium">
+                                                Final Version
+                                            </span>
                                         </div>
                                     </div>
                                 </div>
                             </div>
                             
                             <!-- Timeline Item 2 -->
-                            <div class="flex mb-8 relative">
-                                <div class="flex-shrink-0 w-10 h-10 rounded-full bg-custom-brown flex items-center justify-center z-10">
+                            <div class="flex mb-8 relative timeline-item">
+                                <div class="flex-shrink-0 w-10 h-10 rounded-full bg-custom-brown flex items-center justify-center z-10 timeline-badge">
                                     <i class="fas fa-undo text-white"></i>
                                 </div>
-                                <div class="ml-6">
-                                    <div class="bg-gray-50 p-4 rounded shadow-sm border-l-4 border-custom-brown">
+                                <div class="ml-6 flex-1">
+                                    <div class="bg-gradient-to-r from-gray-50 to-white p-5 rounded-xl shadow-sm border-l-4 border-custom-brown">
                                         <div class="flex flex-col md:flex-row md:items-center md:justify-between mb-2">
-                                            <h3 class="font-medium">CS 205 SLM - Needs Revision</h3>
-                                            <span class="text-sm text-gray-500">April 12, 2025 • 11:15 AM</span>
+                                            <h3 class="font-medium text-custom-brown flex items-center">
+                                                <i class="fas fa-book-reader mr-2"></i>
+                                                CS 205 SLM - Needs Revision
+                                            </h3>
+                                            <span class="text-sm text-gray-500 flex items-center mt-1 md:mt-0">
+                                                <i class="far fa-clock mr-1.5"></i>
+                                                April 12, 2025 • 11:15 AM
+                                            </span>
                                         </div>
                                         <p class="text-gray-600 mb-3">Your CS 205 SLM requires revision before approval.</p>
-                                        <div class="text-sm text-custom-brown">
-                                            <i class="fas fa-comment-alt mr-1"></i> Feedback: "Please include more examples for Chapter 3. The content is well written but needs additional practical exercises."
+                                        <div class="text-sm bg-red-50 p-3 rounded-lg border border-red-100 mb-3">
+                                            <div class="flex">
+                                                <i class="fas fa-comment-alt mt-1 text-custom-brown"></i>
+                                                <div class="ml-2">
+                                                    <p class="text-gray-700">"Please include more examples for Chapter 3. The content is well written but needs additional practical exercises."</p>
+                                                    <div class="flex items-center mt-2 text-xs text-custom-brown">
+                                                        <img src="/api/placeholder/24/24" class="h-6 w-6 rounded-full mr-2" alt="Dean Smith" />
+                                                        <span class="font-medium">Dean Smith</span>
+                                                        <span class="mx-1">•</span>
+                                                        <span>April 12, 2025</span>
+                                                    </div>
+                                                </div>
+                                            </div>
                                         </div>
-                                        <div class="mt-3">
-                                            <button class="text-custom-blue hover:underline text-sm mr-3">
-                                                <i class="fas fa-download mr-1"></i> Download
+                                        <div class="flex flex-wrap items-center gap-2">
+                                            <button class="bg-gray-100 text-custom-blue hover:bg-gray-200 px-4 py-2 rounded-lg text-sm font-medium transition-colors flex items-center">
+                                                <i class="fas fa-download mr-1.5"></i> Download
                                             </button>
-                                            <button class="text-custom-blue hover:underline text-sm mr-3">
-                                                <i class="fas fa-eye mr-1"></i> View
+                                            <button class="bg-gray-100 text-custom-blue hover:bg-gray-200 px-4 py-2 rounded-lg text-sm font-medium transition-colors flex items-center">
+                                                <i class="fas fa-eye mr-1.5"></i> View
                                             </button>
-                                            <button class="bg-custom-blue text-white px-3 py-1 rounded text-sm">
-                                                <i class="fas fa-upload mr-1"></i> Upload Revision
+                                            <button class="bg-custom-blue text-white hover:bg-opacity-90 px-4 py-2 rounded-lg text-sm font-medium transition-colors flex items-center">
+                                                <i class="fas fa-upload mr-1.5"></i> Upload Revision
                                             </button>
+                                            <div class="flex-grow"></div>
+                                            <span class="bg-yellow-100 text-yellow-800 px-3 py-1 rounded-full text-xs font-medium">
+                                                Version 2.0
+                                            </span>
                                         </div>
                                     </div>
                                 </div>
                             </div>
                             
                             <!-- Timeline Item 3 -->
-                            <div class="flex mb-8 relative">
-                                <div class="flex-shrink-0 w-10 h-10 rounded-full bg-custom-yellow flex items-center justify-center z-10">
+                            <div class="flex mb-8 relative timeline-item">
+                                <div class="flex-shrink-0 w-10 h-10 rounded-full bg-custom-yellow flex items-center justify-center z-10 timeline-badge">
                                     <i class="fas fa-paper-plane text-custom-blue"></i>
                                 </div>
-                                <div class="ml-6">
-                                    <div class="bg-gray-50 p-4 rounded shadow-sm border-l-4 border-custom-yellow">
+                                <div class="ml-6 flex-1">
+                                    <div class="bg-gradient-to-r from-gray-50 to-white p-5 rounded-xl shadow-sm border-l-4 border-custom-yellow">
                                         <div class="flex flex-col md:flex-row md:items-center md:justify-between mb-2">
-                                            <h3 class="font-medium">CS 101 TOS - Submitted</h3>
-                                            <span class="text-sm text-gray-500">April 10, 2025 • 9:45 AM</span>
+                                            <h3 class="font-medium text-custom-blue flex items-center">
+                                                <i class="fas fa-table mr-2"></i>
+                                                CS 101 TOS - Submitted
+                                            </h3>
+                                            <span class="text-sm text-gray-500 flex items-center mt-1 md:mt-0">
+                                                <i class="far fa-clock mr-1.5"></i>
+                                                April 10, 2025 • 9:45 AM
+                                            </span>
                                         </div>
                                         <p class="text-gray-600 mb-3">Your CS 101 Table of Specifications has been submitted successfully and is pending review.</p>
-                                        <div class="mt-3">
-                                            <button class="text-custom-blue hover:underline text-sm mr-3">
-                                                <i class="fas fa-download mr-1"></i> Download
+                                        <div class="text-sm bg-blue-50 p-3 rounded-lg border border-blue-100 mb-3">
+                                            <div class="flex">
+                                                <i class="fas fa-info-circle mt-1 text-custom-blue"></i>
+                                                <div class="ml-2">
+                                                    <p class="text-gray-700">Your submission is currently under review. You'll receive feedback soon.</p>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="flex flex-wrap items-center gap-2">
+                                            <button class="bg-gray-100 text-custom-blue hover:bg-gray-200 px-4 py-2 rounded-lg text-sm font-medium transition-colors flex items-center">
+                                                <i class="fas fa-download mr-1.5"></i> Download
                                             </button>
-                                            <button class="text-custom-blue hover:underline text-sm">
-                                                <i class="fas fa-eye mr-1"></i> View
+                                            <button class="bg-gray-100 text-custom-blue hover:bg-gray-200 px-4 py-2 rounded-lg text-sm font-medium transition-colors flex items-center">
+                                                <i class="fas fa-eye mr-1.5"></i> View
                                             </button>
+                                            <div class="flex-grow"></div>
+                                            <span class="bg-blue-100 text-blue-800 px-3 py-1 rounded-full text-xs font-medium">
+                                                <i class="fas fa-spinner fa-spin mr-1"></i>
+                                                Under Review
+                                            </span>
                                         </div>
                                     </div>
                                 </div>
                             </div>
                             
                             <!-- Timeline Item 4 -->
-                            <div class="flex relative">
-                                <div class="flex-shrink-0 w-10 h-10 rounded-full bg-custom-green flex items-center justify-center z-10">
+                            <div class="flex relative timeline-item">
+                                <div class="flex-shrink-0 w-10 h-10 rounded-full bg-custom-green flex items-center justify-center z-10 timeline-badge">
                                     <i class="fas fa-check text-white"></i>
                                 </div>
-                                <div class="ml-6">
-                                    <div class="bg-gray-50 p-4 rounded shadow-sm border-l-4 border-custom-green">
+                                <div class="ml-6 flex-1">
+                                    <div class="bg-gradient-to-r from-gray-50 to-white p-5 rounded-xl shadow-sm border-l-4 border-custom-green">
                                         <div class="flex flex-col md:flex-row md:items-center md:justify-between mb-2">
-                                            <h3 class="font-medium">CS 205 Syllabus - Approved</h3>
-                                            <span class="text-sm text-gray-500">April 5, 2025 • 1:20 PM</span>
+                                            <h3 class="font-medium text-custom-blue flex items-center">
+                                                <i class="fas fa-book mr-2"></i>
+                                                CS 205 Syllabus - Approved
+                                            </h3>
+                                            <span class="text-sm text-gray-500 flex items-center mt-1 md:mt-0">
+                                                <i class="far fa-clock mr-1.5"></i>
+                                                April 5, 2025 • 1:20 PM
+                                            </span>
                                         </div>
                                         <p class="text-gray-600 mb-3">Your CS 205 Syllabus has been approved by the Dean.</p>
-                                        <div class="text-sm text-custom-blue">
-                                            <i class="fas fa-comment-alt mr-1"></i> Feedback: "Great work. Well organized and comprehensive."
+                                        <div class="text-sm bg-green-50 p-3 rounded-lg border border-green-100 mb-3">
+                                            <div class="flex">
+                                                <i class="fas fa-comment-alt mt-1 text-custom-green"></i>
+                                                <div class="ml-2">
+                                                    <p class="text-gray-700">"Great work. Well organized and comprehensive."</p>
+                                                    <div class="flex items-center mt-2 text-xs text-custom-green">
+                                                        <img src="/api/placeholder/24/24" class="h-6 w-6 rounded-full mr-2" alt="Dean Smith" />
+                                                        <span class="font-medium">Dean Smith</span>
+                                                        <span class="mx-1">•</span>
+                                                        <span>April 5, 2025</span>
+                                                    </div>
+                                                </div>
+                                            </div>
                                         </div>
-                                        <div class="mt-3">
-                                            <button class="text-custom-blue hover:underline text-sm mr-3">
-                                                <i class="fas fa-download mr-1"></i> Download
+                                        <div class="flex flex-wrap items-center gap-2">
+                                            <button class="bg-gray-100 text-custom-blue hover:bg-gray-200 px-4 py-2 rounded-lg text-sm font-medium transition-colors flex items-center">
+                                                <i class="fas fa-download mr-1.5"></i> Download
                                             </button>
-                                            <button class="text-custom-blue hover:underline text-sm">
-                                                <i class="fas fa-eye mr-1"></i> View
+                                            <button class="bg-gray-100 text-custom-blue hover:bg-gray-200 px-4 py-2 rounded-lg text-sm font-medium transition-colors flex items-center">
+                                                <i class="fas fa-eye mr-1.5"></i> View
                                             </button>
+                                            <div class="flex-grow"></div>
+                                            <span class="bg-green-100 text-green-800 px-3 py-1 rounded-full text-xs font-medium">
+                                                Final Version
+                                            </span>
                                         </div>
                                     </div>
                                 </div>
                             </div>
                         </div>
-                    </div>
-                </div>
-                
-                <!-- Version History for Selected Item -->
-                <div class="bg-white rounded shadow">
-                    <div class="border-b p-4">
-                        <h2 class="text-lg font-semibold">CS 205 SLM - Version History</h2>
-                    </div>
-                    <div class="p-4">
-                        <div class="overflow-x-auto">
-                            <table class="min-w-full bg-white">
-                                <thead>
-                                    <tr>
-                                        <th class="px-6 py-3 border-b-2 border-gray-200 bg-gray-50 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider">Version</th>
-                                        <th class="px-6 py-3 border-b-2 border-gray-200 bg-gray-50 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider">Date</th>
-                                        <th class="px-6 py-3 border-b-2 border-gray-200 bg-gray-50 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider">Status</th>
-                                        <th class="px-6 py-3 border-b-2 border-gray-200 bg-gray-50 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider">Feedback</th>
-                                        <th class="px-6 py-3 border-b-2 border-gray-200 bg-gray-50 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider">Actions</th>
-                                    </tr>
-                                </thead>
-                                <tbody>
-                                    <tr>
-                                        <td class="px-6 py-4 whitespace-nowrap border-b border-gray-200">v2.0</td>
-                                        <td class="px-6 py-4 whitespace-nowrap border-b border-gray-200">April 12, 2025</td>
-                                        <td class="px-6 py-4 whitespace-nowrap border-b border-gray-200">
-                                            <span class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-custom-brown text-white">Needs Revision</span>
-                                        </td>
-                                        <td class="px-6 py-4 border-b border-gray-200">
-                                            <div class="text-sm text-gray-900">Please include more examples for Chapter 3...</div>
-                                        </td>
-                                        <td class="px-6 py-4 whitespace-nowrap border-b border-gray-200 text-sm">
-                                            <button class="text-custom-blue hover:underline mr-3"><i class="fas fa-download"></i> Download</button>
-                                            <button class="text-custom-blue hover:underline"><i class="fas fa-eye"></i> View</button>
-                                        </td>
-                                    </tr>
-                                    <tr>
-                                        <td class="px-6 py-4 whitespace-nowrap border-b border-gray-200">v1.0</td>
-                                        <td class="px-6 py-4 whitespace-nowrap border-b border-gray-200">April 8, 2025</td>
-                                        <td class="px-6 py-4 whitespace-nowrap border-b border-gray-200">
-                                            <span class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-custom-brown text-white">Needs Revision</span>
-                                        </td>
-                                        <td class="px-6 py-4 border-b border-gray-200">
-                                            <div class="text-sm text-gray-900">Missing assessment strategies in Chapter 2...</div>
-                                        </td>
-                                        <td class="px-6 py-4 whitespace-nowrap border-b border-gray-200 text-sm">
-                                            <button class="text-custom-blue hover:underline mr-3"><i class="fas fa-download"></i> Download</button>
-                                            <button class="text-custom-blue hover:underline"><i class="fas fa-eye"></i> View</button>
-                                        </td>
-                                    </tr>
-                                </tbody>
-                            </table>
+                        
+                        <!-- Load More Button -->
+                        <div class="flex justify-center my-4">
+                            <button class="bg-white text-custom-blue border border-custom-blue hover:bg-custom-blue hover:text-white px-6 py-2 rounded-lg text-sm font-medium transition-colors flex items-center">
+                                <i class="fas fa-history mr-2"></i> Load More History
+                            </button>
                         </div>
                     </div>
                 </div>
-            </main>
-        </div>
-    </div>
-</body>
-</html>
+                
+                <!-- Table View -->
+                <div class="bg-white rounded-xl shadow-sm border border-gray-100 overflow-hidden mb-6">
+                    <div class="px-6 py-4 border-b border-gray-100 flex justify-between items-center">
+                        <h2 class="text-lg font-bold text-gray-800 flex items-center">
+                            <i class="fas fa-table mr-2 text-custom-blue"></i>
+                            All Submissions
+                        </h2>
+                        <div class="flex items-center">
+                            <button class="text-sm text-gray-500 flex items-center mr-4 hover:text-custom-blue">
+                                <i class="fas fa-file-export mr-1.5"></i> Export
+                            </button>
+                            <button class="text-sm text-gray-500 flex items-center hover:text-custom-blue">
+                                <i class="fas fa-print mr-1.5"></i> Print
+                            </button>
+                        </div>
+                    </div>
+                    
+                    <div class="overflow-x-auto">
+                        <table class="min-w-full">
+                            <thead>
+                                <tr class="bg-gray-50">
+                                    <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                                        Document Title
+                                    </th>
+                                    <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                                        Document Type
+                                    </th>
+                                    <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                                        Date Submitted
+                                    </th>
+                                    <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                                        Status
+                                    </th>
+                                    <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                                        Reviewer
+                                    </th>
+                                    <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                                        Actions
+                                    </th>
+                                </tr>
+                            </thead>
+                            <tbody class="bg-white divide-y divide-gray-200">
+                                <!-- Row 1 -->
+                                <tr class="table-row-hover">
+                                    <td class="px-6 py-4 whitespace-nowrap">
+                                        <div class="flex items-center">
+                                            <div class="flex-shrink-0 h-8 w-8 bg-blue-100 rounded-lg flex items-center justify-center">
+                                                <i class="fas fa-file-alt text-custom-blue"></i>
+                                            </div>
+                                            <div class="ml-3">
+                                                <div class="text-sm font-medium text-gray-900">CS 101 Syllabus</div>
+                                                <div class="text-xs text-gray-500">Introduction to Computer Science</div>
+                                            </div>
+                                        </div>
+                                    </td>
+                                    <td class="px-6 py-4 whitespace-nowrap">
+                                        <div class="text-sm text-gray-900">Syllabus</div>
+                                    </td>
+                                    <td class="px-6 py-4 whitespace-nowrap">
+                                        <div class="text-sm text-gray-900">April 15, 2025</div>
+                                        <div class="text-xs text-gray-500">2:30 PM</div>
+                                    </td>
+                                    <td class="px-6 py-4 whitespace-nowrap">
+                                        <span class="px-2.5 py-1 inline-flex text-xs leading-5 font-semibold rounded-full bg-green-100 text-green-800">
+                                            Approved
+                                        </span>
+                                    </td>
+                                    <td class="px-6 py-4 whitespace-nowrap">
+                                        <div class="flex items-center">
+                                            <img src="/api/placeholder/24/24" class="h-6 w-6 rounded-full mr-2" alt="Dean Smith" />
+                                            <div class="text-sm text-gray-900">Dean Smith</div>
+                                        </div>
+                                    </td>
+                                    <td class="px-6 py-4 whitespace-nowrap text-sm">
+                                        <div class="flex space-x-2">
+                                            <button class="text-blue-600 hover:text-blue-900">
+                                                <i class="fas fa-download"></i>
+                                            </button>
+                                            <button class="text-gray-600 hover:text-gray-900">
+                                                <i class="fas fa-eye"></i>
+                                            </button>
+                                            <button class="text-gray-600 hover:text-gray-900">
+                                                <i class="fas fa-ellipsis-v"></i>
+                                            </button>
+                                        </div>
+                                    </td>
+                                </tr>
+                                
+                                <!-- Row 2 -->
+                                <tr class="table-row-hover">
+                                    <td class="px-6 py-4 whitespace-nowrap">
+                                        <div class="flex items-center">
+                                            <div class="flex-shrink-0 h-8 w-8 bg-blue-100 rounded-lg flex items-center justify-center">
+                                                <i class="fas fa-book-reader text-custom-blue"></i>
+                                            </div>
+                                            <div class="ml-3">
+                                                <div class="text-sm font-medium text-gray-900">CS 205 SLM</div>
+                                                <div class="text-xs text-gray-500">Data Structures and Algorithms</div>
+                                            </div>
+                                        </div>
+                                    </td>
+                                    <td class="px-6 py-4 whitespace-nowrap">
+                                        <div class="text-sm text-gray-900">SLM</div>
+                                    </td>
+                                    <td class="px-6 py-4 whitespace-nowrap">
+                                        <div class="text-sm text-gray-900">April 12, 2025</div>
+                                        <div class="text-xs text-gray-500">11:15 AM</div>
+                                    </td>
+                                    <td class="px-6 py-4 whitespace-nowrap">
+                                        <span class="px-2.5 py-1 inline-flex text-xs leading-5 font-semibold rounded-full bg-red-100 text-red-800">
+                                            Needs Revision
+                                        </span>
+                                    </td>
+                                    <td class="px-6 py-4 whitespace-nowrap">
+                                        <div class="flex items-center">
+                                            <img src="/api/placeholder/24/24" class="h-6 w-6 rounded-full mr-2" alt="Dean Smith" />
+                                            <div class="text-sm text-gray-900">Dean Smith</div>
+                                        </div>
+                                    </td>
+                                    <td class="px-6 py-4 whitespace-nowrap text-sm">
+                                        <div class="flex space-x-2">
+                                            <button class="text-blue-600 hover:text-blue-900">
+                                                <i class="fas fa-download"></i>
+                                            </button>
+                                            <button class="text-gray-600 hover:text-gray-900">
+                                                <i class="fas fa-eye"></i>
+                                            </button>
+                                            <button class="text-blue-600 hover:text-blue-900">
+                                                <i class="fas fa-upload"></i>
+                                            </button>
+                                        </div>
+                                    </td>
+                                </tr>
+                                
+                                <!-- Row 3 -->
+                                <tr class="table-row-hover">
+                                    <td class="px-6 py-4 whitespace-nowrap">
+                                        <div class="flex items-center">
+                                            <div class="flex-shrink-0 h-8 w-8 bg-blue-100 rounded-lg flex items-center justify-center">
+                                                <i class="fas fa-table text-custom-blue"></i>
+                                            </div>
+                                            <div class="ml-3">
+                                                <div class="text-sm font-medium text-gray-900">CS 101 TOS</div>
+                                                <div class="text-xs text-gray-500">Introduction to Computer Science</div>
+                                            </div>
+                                        </div>
+                                    </td>
+                                    <td class="px-6 py-4 whitespace-nowrap">
+                                        <div class="text-sm text-gray-900">TOS</div>
+                                    </td>
+                                    <td class="px-6 py-4 whitespace-nowrap">
+                                        <div class="text-sm text-gray-900">April 10, 2025</div>
+                                        <div class="text-xs text-gray-500">9:45 AM</div>
+                                    </td>
+                                    <td class="px-6 py-4 whitespace-nowrap">
+                                        <span class="px-2.5 py-1 inline-flex text-xs leading-5 font-semibold rounded-full bg-yellow-100 text-yellow-800">
+                                            Pending
+                                        </span>
+                                    </td>
+                                    <td class="px-6 py-4 whitespace-nowrap">
+                                        <div class="flex items-center">
+                                            <div class="text-sm text-gray-500 italic">Awaiting review</div>
+                                        </div>
+                                    </td>
+                                    <td class="px-6 py-4 whitespace-nowrap text-sm">
+                                        <div class="flex space-x-2">
+                                            <button class="text-blue-600 hover:text-blue-900">
+                                                <i class="fas fa-download"></i>
+                                            </button>
+                                            <button class="text-gray-600 hover:text-gray-900">
+                                                <i class="fas fa-eye"></i>
+                                            </button>
+                                            <button class="text-gray-600 hover:text-gray-900">
+                                                <i class="fas fa-ellipsis-v"></i>
+                                            </button>
+                                        </div>
+                                    </td>
+                                </tr>
+                                
+                                <!-- Row 4 -->
+                                <tr class="table-row-hover">
+                                    <td class="px-6 py-4 whitespace-nowrap">
+                                        <div class="flex items-center">
+                                            <div class="flex-shrink-0 h-8 w-8 bg-blue-100 rounded-lg flex items-center justify-center">
+                                                <i class="fas fa-file-alt text-custom-blue"></i>
+                                            </div>
+                                            <div class="ml-3">
+                                                <div class="text-sm font-medium text-gray-900">CS 205 Syllabus</div>
+                                                <div class="text-xs text-gray-500">Data Structures and Algorithms</div>
+                                            </div>
+                                        </div>
+                                    </td>
+                                    <td class="px-6 py-4 whitespace-nowrap">
+                                        <div class="text-sm text-gray-900">Syllabus</div>
+                                    </td>
+                                    <td class="px-6 py-4 whitespace-nowrap">
+                                        <div class="text-sm text-gray-900">April 5, 2025</div>
+                                        <div class="text-xs text-gray-500">1:20 PM</div>
+                                    </td>
+                                    <td class="px-6 py-4 whitespace-nowrap">
+                                        <span class="px-2.5 py-1 inline-flex text-xs leading-5 font-semibold rounded-full bg-green-100 text-green-800">
+                                            Approved
+                                        </span>
+                                    </td>
+                                    <td class="px-6 py-4 whitespace-nowrap">
+                                        <div class="flex items-center">
+                                            <img src="/api/placeholder/24/24" class="h-6 w-6 rounded-full mr-2" alt="Dean Smith" />
+                                            <div class="text-sm text-gray-900">Dean Smith</div>
+                                        </div>
+                                    </td>
+                                    <td class="px-6 py-4 whitespace-nowrap text-sm">
+                                        <div class="flex space-x-2">
+                                            <button class="text-blue-600 hover:text-blue-900">
+                                                <i class="fas fa-download"></i>
+                                            </button>
+                                            <button class="text-gray-600 hover:text-gray-900">
+                                                <i class="fas fa-eye"></i>
+                                            </button>
+                                            <button class="text-gray-600 hover:text-gray-900">
+                                                <i class="fas fa-ellipsis-v"></i>
+                                            </button>
+                                        </div>
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                    
+                    <!-- Pagination -->
+                    <div class="px-6 py-4 border-t border-gray-200 flex items-center justify-between">
+                        <div class="flex-1 flex justify-between sm:hidden">
+                            <a href="#" class="relative inline-flex items-center px-4 py-2 border border-gray-300 text-sm font-medium rounded-md text-gray-700 bg-white hover:bg-gray-50">
+                                Previous
+                            </a>
+                            <a href="#" class="ml-3 relative inline-flex items-center px-4 py-2 border border-gray-300 text-sm font-medium rounded-md text-gray-700 bg-white hover:bg-gray-50">
+                                Next
+                            </a>
+                        </div>
+                        <div class="hidden sm:flex-1 sm:flex sm:items-center sm:justify-between">
+                            <div>
+                                <p class="text-sm text-gray-700">
+                                    Showing <span class="font-medium">1</span> to <span class="font-medium">4</span> of <span class="font-medium">24</span> results
+                                </p>
+                            </div>
+                            <div>
+                                <nav class="relative z-0 inline-flex rounded-md shadow-sm -space-x-px" aria-label="Pagination">
+                                    <a href="#" class="relative inline-flex items-center px-2 py-2 rounded-l-md border border-gray-300 bg-white text-sm font-medium text-gray-500 hover:bg-gray-50">
+                                        <span class="sr-only">Previous</span>
+                                        <i class="fas fa-chevron-left text-xs"></i>
+                                    </a>
+                                    <a href="#" class="relative inline-flex items-center px-4 py-2 border border-gray-300 bg-white text-sm font-medium text-custom-blue hover:bg-gray-50">
+                                        1
+                                    </a>
+                                    <a href="#" class="relative inline-flex items-center px-4 py-2 border border-gray-300 bg-white text-sm font-medium text-gray-700 hover:bg-gray-50">
+                                        2
+                                    </a>
+                                    <a href="#" class="relative inline-flex items-center px-4 py-2 border border-gray-300 bg-white text-sm font-medium text-gray-700 hover:bg-gray-50">
+                                        3
+                                    </a>
+                                    <span class="relative inline-flex items-center px-4 py-2 border border-gray-300 bg-gray-50 text-sm font-medium text-gray-700">
+                                        ...
+                                    </span>
+                                    <a href="#" class="relative inline-flex items-center px-4 py-2 border border-gray-300 bg-white text-sm font-medium text-gray-700 hover:bg-gray-50">
+                                        6
+                                    </a>
+                                    <a href="#" class="relative inline-flex items-center px-2 py-2 rounded-r-md border border-gray-300 bg-white text-sm font-medium text-gray-500 hover:bg-gray-50">
+                                        <span class="sr-only">Next</span>
+                                        <i class="fas fa-chevron-right text-xs"></i>
+                                    </a>
+                                </nav>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Activity Feed -->
+                <div class="bg-white rounded-xl shadow-sm border border-gray-100 overflow-hidden mb-6">
+                    <div class="px-6 py-4 border-b border-gray-100">
+                        <h2 class="text-lg font-bold text-gray-800 flex items-center">
+                            <i class="fas fa-bolt mr-2 text-custom-yellow"></i>
+                            Recent Activity
+                        </h2>
+                    </div>
+                    
+                    <div class="p-6">
+                        <div class="space-y-4">
+                            <!-- Activity Item 1 -->
+                            <div class="flex items-start">
+                                <div class="flex-shrink-0">
+                                    <div class="h-9 w-9 rounded-full bg-blue-100 flex items-center justify-center">
+                                        <i class="fas fa-comment-alt text-custom-blue"></i>
+                                    </div>
+                                </div>
+                                <div class="ml-3 flex-1">
+                                    <p class="text-sm text-gray-700">
+                                        <span class="font-medium">Dean Smith</span> commented on your <span class="font-medium text-custom-blue">CS 101 Syllabus</span>
+                                    </p>
+                                    <div class="mt-1 text-xs text-gray-500">15 minutes ago</div>
+                                </div>
+                            </div>
+                            
+                            <!-- Activity Item 2 -->
+                            <div class="flex items-start">
+                                <div class="flex-shrink-0">
+                                    <div class="h-9 w-9 rounded-full bg-green-100 flex items-center justify-center">
+                                        <i class="fas fa-check text-custom-green"></i>
+                                    </div>
+                                </div>
+                                <div class="ml-3 flex-1">
+                                    <p class="text-sm text-gray-700">
+                                        <span class="font-medium">Your CS 101 Syllabus</span> has been approved
+                                    </p>
+                                    <div class="mt-1 text-xs text-gray-500">2 hours ago</div>
+                                </div>
+                            </div>
+                            
+                            <!-- Activity Item 3 -->
+                            <div class="flex items-start">
+                                <div class="flex-shrink-0">
+                                    <div class="h-9 w-9 rounded-full bg-red-100 flex items-center justify-center">
+                                        <i class="fas fa-undo text-custom-brown"></i>
+                                    </div>
+                                </div>
+                                <div class="ml-3 flex-1">
+                                    <p class="text-sm text-gray-700">
+                                        <span class="font-medium">Your CS 205 SLM</span> needs revision
+                                    </p>
+                                    <div class="mt-1 text-xs text-gray-500">12 hours ago</div>
+                                </div>
+                            </div>
+                            
+                            <!-- Activity Item 4 -->
+                            <div class="flex items-start">
+                                <div class="flex-shrink-0">
+                                    <div class="h-9 w-9 rounded-full bg-yellow-100 flex items-center justify-center">
+                                        <i class="fas fa-paper-plane text-custom-yellow"></i>
+                                    </div>
+                                </div>
+                                <div class="ml-3 flex-1">
+                                    <p class="text-sm text-gray-700">
+                                        <span class="font-medium">You submitted CS 101 TOS</span> for review
+                                    </p>
+                                    <div class="mt-1 text-xs text-gray-500">1 day ago</div>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="mt-4 text-center">
+                            <a href="#" class="text-sm text-custom-blue hover:underline">View all activity</a>
+                        </div>
+                    </div>
+                </div>
+                
+                </main>
+                </div>
+                </div>
+                
+                <script>
+                document.addEventListener('DOMContentLoaded', function() {
+                    // Filter button functionality
+                    const filterButtons = document.querySelectorAll('.filter-btn');
+                    filterButtons.forEach(button => {
+                        button.addEventListener('click', function() {
+                            filterButtons.forEach(btn => btn.classList.remove('active', 'bg-custom-blue', 'text-white'));
+                            filterButtons.forEach(btn => btn.classList.add('bg-gray-100', 'text-gray-700'));
+                            this.classList.remove('bg-gray-100', 'text-gray-700');
+                            this.classList.add('active', 'bg-custom-blue', 'text-white');
+                        });
+                    });
+                    
+                    // Mobile menu toggle
+                    const menuButton = document.querySelector('button.md\\:hidden');
+                    const sidebar = document.querySelector('.animated-bg');
+                    
+                    if (menuButton && sidebar) {
+                        menuButton.addEventListener('click', function() {
+                            sidebar.classList.toggle('hidden');
+                        });
+                    }
+                });
+                </script>
+                </body>
+                </html>

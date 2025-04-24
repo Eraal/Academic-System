@@ -1,679 +1,805 @@
 <!DOCTYPE html>
 <html lang="en">
-  <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Dean Dashboard - Academic Deliverables System</title>
-    <link
-      href="https://cdnjs.cloudflare.com/ajax/libs/tailwindcss/2.2.19/tailwind.min.css"
-      rel="stylesheet"
-    />
-    <link
-      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css"
-      rel="stylesheet"
-    />
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/tailwindcss/2.2.19/tailwind.min.css" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css" rel="stylesheet">
     <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/3.7.0/chart.min.js"></script>
     <style>
-      .bg-custom-blue {
-        background-color: #2a4e92;
-      }
-      .bg-custom-brown {
-        background-color: #723e2c;
-      }
-      .bg-custom-green {
-        background-color: #51b63f;
-      }
-      .bg-custom-light-blue {
-        background-color: #62bee3;
-      }
-      .bg-custom-yellow {
-        background-color: #fac801;
-      }
-      .text-custom-blue {
-        color: #2a4e92;
-      }
-      .text-custom-brown {
-        color: #723e2c;
-      }
-      .text-custom-green {
-        color: #51b63f;
-      }
-      .text-custom-light-blue {
-        color: #62bee3;
-      }
-      .text-custom-yellow {
-        color: #fac801;
-      }
-      .border-custom-blue {
-        border-color: #2a4e92;
-      }
+        @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap');
+        
+        body {
+            font-family: 'Poppins', sans-serif;
+        }
+        
+        .bg-custom-blue { background-color: #1A3A7C; }
+        .bg-custom-brown { background-color: #723E2C; }
+        .bg-custom-green { background-color: #51B63F; }
+        .bg-custom-light-blue { background-color: #62BEE3; }
+        .bg-custom-yellow { background-color: #FAC801; }
+        .text-custom-blue { color: #1A3A7C; }
+        .text-custom-brown { color: #723E2C; }
+        .text-custom-green { color: #51B63F; }
+        .text-custom-light-blue { color: #62BEE3; }
+        .text-custom-yellow { color: #FAC801; }
+        .border-custom-blue { border-color: #1A3A7C; }
+        .border-custom-green { border-color: #51B63F; }
+        .border-custom-yellow { border-color: #FAC801; }
+        .border-custom-brown { border-color: #723E2C; }
+        
+        .sidebar-active {
+            position: relative;
+            background-color: rgba(255, 255, 255, 0.15);
+            font-weight: 500;
+        }
+        
+        .sidebar-active::before {
+            content: "";
+            position: absolute;
+            left: 0;
+            top: 0;
+            height: 100%;
+            width: 4px;
+            background-color: #FAC801;
+        }
+        
+        .card-hover:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
+            transition: all 0.3s ease;
+        }
+        
+        .progress-bar {
+            height: 6px;
+            border-radius: 3px;
+            background-color: #E5E7EB;
+            overflow: hidden;
+        }
+        
+        .progress-fill {
+            height: 100%;
+            border-radius: 3px;
+        }
+        
+        .animated-bg {
+            background: linear-gradient(270deg, #1A3A7C, #2B4D8F);
+            background-size: 400% 400%;
+            animation: gradient 15s ease infinite;
+        }
+        
+        @keyframes gradient {
+            0% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+            100% { background-position: 0% 50%; }
+        }
+        
+        .status-badge {
+            display: inline-flex;
+            align-items: center;
+            padding: 0.5rem 0.75rem;
+            border-radius: 9999px;
+            font-weight: 500;
+            font-size: 0.75rem;
+            line-height: 1rem;
+        }
+        
+        .status-badge i {
+            margin-right: 0.375rem;
+        }
+        
+        .top-nav-decoration {
+            position: absolute;
+            top: 0;
+            right: 0;
+            height: 100%;
+            width: 30%;
+            background: linear-gradient(90deg, rgba(26, 58, 124, 0), rgba(26, 58, 124, 0.1));
+            z-index: 1;
+        }
+
+        .table-row-hover:hover {
+            background-color: rgba(26, 58, 124, 0.05);
+            transition: all 0.2s ease;
+        }
+        
+        .dashboard-card {
+            transition: all 0.3s ease;
+            border-left: 4px solid transparent;
+        }
+        
+        .dashboard-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1);
+        }
+        
+        .dashboard-card.blue {
+            border-left-color: #1A3A7C;
+        }
+        
+        .dashboard-card.green {
+            border-left-color: #51B63F;
+        }
+        
+        .dashboard-card.yellow {
+            border-left-color: #FAC801;
+        }
+        
+        .dashboard-card.red {
+            border-left-color: #EF4444;
+        }
+        
+        .notification-dot {
+            position: absolute;
+            top: 0;
+            right: 0;
+            height: 8px;
+            width: 8px;
+            background-color: #FAC801;
+            border-radius: 50%;
+        }
+        
+        .deadline-item {
+            transition: all 0.2s ease;
+        }
+        
+        .deadline-item:hover {
+            background-color: rgba(26, 58, 124, 0.05);
+        }
+        
+        .action-button {
+            transition: all 0.2s ease;
+        }
+        
+        .action-button:hover {
+            transform: translateY(-2px);
+        }
     </style>
-  </head>
-  <body class="bg-gray-100">
+</head>
+<body class="bg-gray-100">
     <div class="flex h-screen">
-      <!-- Sidebar -->
-      <div class="bg-custom-blue text-white w-64 flex-shrink-0 hidden md:block">
-        <div class="p-4 text-center border-b border-blue-700">
-          <h2 class="font-bold text-xl">Academic System</h2>
-          <p class="text-sm text-custom-yellow mt-1">Role: Dean</p>
+        <!-- Sidebar -->
+        <div class="animated-bg text-white w-72 flex-shrink-0 hidden md:flex md:flex-col shadow-lg">
+            <div class="p-6 flex items-center space-x-3 border-b border-opacity-20 border-blue-300">
+                <div class="bg-white rounded-lg p-2 shadow-md">
+                    <svg class="w-8 h-8 text-custom-blue" fill="currentColor" viewBox="0 0 20 20">
+                        <path d="M10.394 2.08a1 1 0 00-.788 0L3.493 5.05a1 1 0 000 1.79l6.113 2.97a1 1 0 00.788 0l6.113-2.97a1 1 0 000-1.79l-6.113-2.97z"></path>
+                        <path d="M3.05 7.097a1 1 0 00-1.45.9v5.322a1 1 0 00.55.851l6.113 2.97a1 1 0 00.9 0l6.113-2.97a1 1 0 00.55-.851V7.997a1 1 0 00-1.45-.9l-5.714 2.775a1 1 0 01-.9 0L3.05 7.097z"></path>
+                    </svg>
+                </div>
+                <div>
+                    <h2 class="font-bold text-xl tracking-wide">AcadSystem</h2>
+                    <div class="flex items-center mt-1">
+                        <span class="h-2 w-2 bg-custom-yellow rounded-full"></span>
+                        <p class="text-xs font-medium ml-1.5 text-blue-100">Dean Portal</p>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="px-3 py-6 flex-1">
+                <div class="mb-3 px-3">
+                    <h3 class="text-xs uppercase tracking-wider text-blue-200 font-semibold">Main Navigation</h3>
+                </div>
+                <nav>
+                    <ul class="space-y-1">
+                        <li>
+                            <a href="dean-dashboard.html" class="sidebar-active flex items-center py-3 px-4 rounded-lg text-white transition-all duration-200">
+                                <i class="fas fa-tachometer-alt w-5 text-center"></i>
+                                <span class="ml-3">Dashboard</span>
+                            </a>
+                        </li>
+                        <li>
+                            <a href="dean-review.html" class="flex items-center py-3 px-4 rounded-lg text-blue-100 hover:bg-white hover:bg-opacity-10 transition-all duration-200">
+                                <i class="fas fa-clipboard-check w-5 text-center"></i>
+                                <span class="ml-3">Review Submissions</span>
+                            </a>
+                        </li>
+                        <!-- <li>
+                            <a href="dean-departments.html" class="flex items-center py-3 px-4 rounded-lg text-blue-100 hover:bg-white hover:bg-opacity-10 transition-all duration-200">
+                                <i class="fas fa-building w-5 text-center"></i>
+                                <span class="ml-3">Departments</span>
+                            </a>
+                        </li>
+                        <li>
+                            <a href="dean-faculty.html" class="flex items-center py-3 px-4 rounded-lg text-blue-100 hover:bg-white hover:bg-opacity-10 transition-all duration-200">
+                                <i class="fas fa-users w-5 text-center"></i>
+                                <span class="ml-3">Faculty Members</span>
+                            </a>
+                        </li>
+                        <li>
+                            <a href="dean-reports.html" class="flex items-center py-3 px-4 rounded-lg text-blue-100 hover:bg-white hover:bg-opacity-10 transition-all duration-200">
+                                <i class="fas fa-chart-bar w-5 text-center"></i>
+                                <span class="ml-3">Reports & Analytics</span>
+                            </a>
+                        </li>-->
+                        <li class="pt-6 mt-6 border-t border-blue-800">
+                            <a href="loginpage.html" class="flex items-center py-3 px-4 rounded-lg text-blue-100 hover:bg-white hover:bg-opacity-10 transition-all duration-200">
+                                <i class="fas fa-sign-out-alt w-5 text-center"></i>
+                                <span class="ml-3">Logout</span>
+                            </a>
+                        </li> 
+                    </ul>
+                </nav>
+            </div>
         </div>
-        <nav class="mt-6">
-          <ul>
-            <li class="mb-1">
-              <a
-                href="dean-dashboard.html"
-                class="block py-3 px-4 bg-blue-800 transition-colors"
-              >
-                <i class="fas fa-tachometer-alt mr-2"></i> Dashboard
-              </a>
-            </li>
-            <li class="mb-1">
-              <a
-                href="dean-review.html"
-                class="block py-3 px-4 hover:bg-blue-800 transition-colors"
-              >
-                <i class="fas fa-clipboard-check mr-2"></i> Review Submissions
-              </a>
-            </li>
-            <li class="mb-1">
-              <a
-                href="loginpage.html"
-                class="block py-3 px-4 hover:bg-blue-800 transition-colors"
-              >
-                <i class="fas fa-sign-out-alt mr-2"></i> Logout
-              </a>
-            </li>
-          </ul>
-        </nav>
-      </div>
 
-      <!-- Main Content -->
-      <div class="flex-1 flex flex-col overflow-hidden">
-        <!-- Top Navigation -->
-        <header class="bg-white shadow-sm">
-          <div class="flex items-center justify-between p-4">
-            <div class="flex items-center">
-              <button class="md:hidden mr-4 text-gray-600">
-                <i class="fas fa-bars"></i>
-              </button>
-              <h1 class="text-xl font-semibold text-gray-800">
-                Dean Dashboard
-              </h1>
-            </div>
-            <div>
-              <span
-                class="bg-custom-blue text-white py-1 px-3 rounded-full text-sm"
-              >
-                Dean
-              </span>
-            </div>
-          </div>
-        </header>
+        <!-- Main Content -->
+        <div class="flex-1 flex flex-col overflow-hidden">
+            <!-- Top Navigation -->
+            <header class="bg-white shadow-sm relative">
+                <div class="top-nav-decoration"></div>
+                <div class="flex items-center justify-between px-6 py-4">
+                    <div class="flex items-center">
+                        <button class="md:hidden mr-4 text-gray-600">
+                            <i class="fas fa-bars"></i>
+                        </button>
+                        <h1 class="text-xl font-semibold text-gray-800">Dean Dashboard</h1>
+                    </div>
+                    <div class="flex items-center space-x-4">
+                        <div class="relative">
+                            <button class="text-gray-500 hover:text-gray-600">
+                                <i class="fas fa-bell text-xl"></i>
+                                <span class="absolute top-0 right-0 h-2 w-2 rounded-full bg-custom-yellow"></span>
+                            </button>
+                        </div>
+                        <div class="flex items-center space-x-2">
+                            <div class="w-10 h-10 rounded-full bg-custom-blue flex items-center justify-center text-white">
+                                <span class="font-medium text-sm">DJ</span>
+                            </div>
+                            <div class="hidden md:block">
+                                <p class="text-sm font-medium text-gray-700">Dr. Jesse Dean</p>
+                                <p class="text-xs text-gray-500">College of Science</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </header>
 
-        <!-- Content Area -->
-        <main class="flex-1 overflow-y-auto p-6">
-          <!-- Summary Stats -->
-          <div
-            class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-6"
-          >
-            <div class="bg-white rounded-lg shadow p-6">
-              <div class="flex items-center">
-                <div class="p-3 rounded-full bg-blue-100 text-custom-blue mr-4">
-                  <i class="fas fa-file-alt text-xl"></i>
+            <!-- Content Area -->
+            <main class="flex-1 overflow-y-auto p-6">
+                <!-- Welcome Card -->
+                <div class="bg-white rounded-lg shadow-sm p-6 mb-6">
+                    <div class="flex items-center justify-between">
+                        <div>
+                            <h2 class="text-2xl font-bold text-gray-800">Welcome back, Dr. Dean!</h2>
+                            <p class="text-gray-600 mt-1">Here's what's happening with your academic deliverables today.</p>
+                        </div>
+                        <div class="hidden md:flex items-center space-x-2">
+                            <p class="text-sm text-gray-600">Current Term: <span class="font-semibold text-custom-blue">First Term 2024-2025</span></p>
+                            <span class="h-4 w-px bg-gray-300"></span>
+                            <p class="text-sm text-gray-600">Today: <span class="font-semibold">June 1, 2025</span></p>
+                        </div>
+                    </div>
                 </div>
-                <div>
-                  <p class="text-sm text-gray-500 font-medium">
-                    Total Submissions
-                  </p>
-                  <p class="text-2xl font-bold">48</p>
-                </div>
-              </div>
-              <div class="mt-4 text-sm text-gray-500">
-                <span class="text-green-500 font-semibold">+12%</span> from last
-                month
-              </div>
-            </div>
 
-            <div class="bg-white rounded-lg shadow p-6">
-              <div class="flex items-center">
-                <div
-                  class="p-3 rounded-full bg-green-100 text-custom-green mr-4"
-                >
-                  <i class="fas fa-check-circle text-xl"></i>
-                </div>
-                <div>
-                  <p class="text-sm text-gray-500 font-medium">Approved</p>
-                  <p class="text-2xl font-bold">23</p>
-                </div>
-              </div>
-              <div class="mt-4 text-sm text-gray-500">
-                <span class="text-green-500 font-semibold">48%</span> completion
-                rate
-              </div>
-            </div>
-
-            <div class="bg-white rounded-lg shadow p-6">
-              <div class="flex items-center">
-                <div
-                  class="p-3 rounded-full bg-yellow-100 text-custom-yellow mr-4"
-                >
-                  <i class="fas fa-sync-alt text-xl"></i>
-                </div>
-                <div>
-                  <p class="text-sm text-gray-500 font-medium">
-                    Pending Review
-                  </p>
-                  <p class="text-2xl font-bold">15</p>
-                </div>
-              </div>
-              <div class="mt-4 text-sm text-gray-500">
-                <span class="text-yellow-500 font-semibold">31%</span> of total
-                submissions
-              </div>
-            </div>
-
-            <div class="bg-white rounded-lg shadow p-6">
-              <div class="flex items-center">
-                <div class="p-3 rounded-full bg-red-100 text-red-500 mr-4">
-                  <i class="fas fa-exclamation-circle text-xl"></i>
-                </div>
-                <div>
-                  <p class="text-sm text-gray-500 font-medium">
-                    Needs Revision
-                  </p>
-                  <p class="text-2xl font-bold">10</p>
-                </div>
-              </div>
-              <div class="mt-4 text-sm text-gray-500">
-                <span class="text-red-500 font-semibold">21%</span> need
-                improvements
-              </div>
-            </div>
-          </div>
-
-          <!-- Progress Chart -->
-          <div class="mb-8">
-            <div class="bg-white rounded-lg shadow p-6">
-              <h2 class="text-xl font-semibold text-gray-700 mb-4">
-                Submission Progress
-              </h2>
-              <div class="h-64">
-                <canvas id="submissionChart"></canvas>
-              </div>
-            </div>
-          </div>
-
-          <!-- Deadline Management -->
-          <div class="mb-8">
-            <div class="bg-white rounded-lg shadow overflow-hidden">
-              <div
-                class="flex justify-between items-center p-6 border-b border-gray-200"
-              >
-                <h2 class="text-xl font-semibold text-gray-700">
-                  Manage Deadlines
-                </h2>
-                <button
-                  class="bg-custom-blue text-white py-2 px-4 rounded hover:opacity-90"
-                >
-                  <i class="fas fa-plus mr-2"></i> Set New Deadline
-                </button>
-              </div>
-              <div class="overflow-x-auto">
-                <table class="min-w-full divide-y divide-gray-200">
-                  <thead class="bg-gray-50">
-                    <tr>
-                      <th
-                        scope="col"
-                        class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider"
-                      >
-                        Deliverable
-                      </th>
-                      <th
-                        scope="col"
-                        class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider"
-                      >
-                        Current Deadline
-                      </th>
-                      <th
-                        scope="col"
-                        class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider"
-                      >
-                        Submissions
-                      </th>
-                      <th
-                        scope="col"
-                        class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider"
-                      >
-                        Completion
-                      </th>
-                      <th
-                        scope="col"
-                        class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider"
-                      >
-                        Actions
-                      </th>
-                    </tr>
-                  </thead>
-                  <tbody class="bg-white divide-y divide-gray-200">
-                    <tr>
-                      <td class="px-6 py-4 whitespace-nowrap">
-                        <div class="text-sm font-medium text-gray-900">
-                          Syllabus
-                        </div>
-                        <div class="text-xs text-gray-500">
-                          First Term 2024-2025
-                        </div>
-                      </td>
-                      <td class="px-6 py-4 whitespace-nowrap">
-                        <div class="text-sm text-gray-900">June 15, 2025</div>
-                        <div class="text-xs text-custom-blue">
-                          14 days remaining
-                        </div>
-                      </td>
-                      <td class="px-6 py-4 whitespace-nowrap">
-                        <div class="text-sm text-gray-900">12/15</div>
-                      </td>
-                      <td class="px-6 py-4 whitespace-nowrap">
-                        <div class="w-full bg-gray-200 rounded-full h-2">
-                          <div
-                            class="bg-custom-green rounded-full h-2"
-                            style="width: 80%"
-                          ></div>
-                        </div>
-                        <div class="text-xs text-gray-500 mt-1">
-                          80% complete
-                        </div>
-                      </td>
-                      <td class="px-6 py-4 whitespace-nowrap text-sm">
-                        <button
-                          class="text-custom-blue hover:text-blue-800 mr-3"
-                        >
-                          <i class="fas fa-edit"></i>
-                        </button>
-                        <button class="text-custom-blue hover:text-blue-800">
-                          <i class="fas fa-bell"></i>
-                        </button>
-                      </td>
-                    </tr>
-                    <tr>
-                      <td class="px-6 py-4 whitespace-nowrap">
-                        <div class="text-sm font-medium text-gray-900">
-                          Course SLM
-                        </div>
-                        <div class="text-xs text-gray-500">
-                          First Term 2024-2025
-                        </div>
-                      </td>
-                      <td class="px-6 py-4 whitespace-nowrap">
-                        <div class="text-sm text-gray-900">June 30, 2025</div>
-                        <div class="text-xs text-custom-blue">
-                          29 days remaining
-                        </div>
-                      </td>
-                      <td class="px-6 py-4 whitespace-nowrap">
-                        <div class="text-sm text-gray-900">8/15</div>
-                      </td>
-                      <td class="px-6 py-4 whitespace-nowrap">
-                        <div class="w-full bg-gray-200 rounded-full h-2">
-                          <div
-                            class="bg-custom-green rounded-full h-2"
-                            style="width: 53%"
-                          ></div>
-                        </div>
-                        <div class="text-xs text-gray-500 mt-1">
-                          53% complete
-                        </div>
-                      </td>
-                      <td class="px-6 py-4 whitespace-nowrap text-sm">
-                        <button
-                          class="text-custom-blue hover:text-blue-800 mr-3"
-                        >
-                          <i class="fas fa-edit"></i>
-                        </button>
-                        <button class="text-custom-blue hover:text-blue-800">
-                          <i class="fas fa-bell"></i>
-                        </button>
-                      </td>
-                    </tr>
-                    <tr>
-                      <td class="px-6 py-4 whitespace-nowrap">
-                        <div class="text-sm font-medium text-gray-900">
-                          Table of Specifications
-                        </div>
-                        <div class="text-xs text-gray-500">
-                          First Term 2024-2025
-                        </div>
-                      </td>
-                      <td class="px-6 py-4 whitespace-nowrap">
-                        <div class="text-sm text-gray-900">July 15, 2025</div>
-                        <div class="text-xs text-custom-blue">
-                          44 days remaining
-                        </div>
-                      </td>
-                      <td class="px-6 py-4 whitespace-nowrap">
-                        <div class="text-sm text-gray-900">3/15</div>
-                      </td>
-                      <td class="px-6 py-4 whitespace-nowrap">
-                        <div class="w-full bg-gray-200 rounded-full h-2">
-                          <div
-                            class="bg-custom-green rounded-full h-2"
-                            style="width: 20%"
-                          ></div>
-                        </div>
-                        <div class="text-xs text-gray-500 mt-1">
-                          20% complete
-                        </div>
-                      </td>
-                      <td class="px-6 py-4 whitespace-nowrap text-sm">
-                        <button
-                          class="text-custom-blue hover:text-blue-800 mr-3"
-                        >
-                          <i class="fas fa-edit"></i>
-                        </button>
-                        <button class="text-custom-blue hover:text-blue-800">
-                          <i class="fas fa-bell"></i>
-                        </button>
-                      </td>
-                    </tr>
-                    <tr>
-                      <td class="px-6 py-4 whitespace-nowrap">
-                        <div class="text-sm font-medium text-gray-900">
-                          Exam Materials
-                        </div>
-                        <div class="text-xs text-gray-500">
-                          First Term 2024-2025
-                        </div>
-                      </td>
-                      <td class="px-6 py-4 whitespace-nowrap">
-                        <div class="text-sm text-gray-900">August 10, 2025</div>
-                        <div class="text-xs text-custom-blue">
-                          70 days remaining
-                        </div>
-                      </td>
-                      <td class="px-6 py-4 whitespace-nowrap">
-                        <div class="text-sm text-gray-900">0/15</div>
-                      </td>
-                      <td class="px-6 py-4 whitespace-nowrap">
-                        <div class="w-full bg-gray-200 rounded-full h-2">
-                          <div
-                            class="bg-custom-green rounded-full h-2"
-                            style="width: 0%"
-                          ></div>
-                        </div>
-                        <div class="text-xs text-gray-500 mt-1">
-                          0% complete
-                        </div>
-                      </td>
-                      <td class="px-6 py-4 whitespace-nowrap text-sm">
-                        <button
-                          class="text-custom-blue hover:text-blue-800 mr-3"
-                        >
-                          <i class="fas fa-edit"></i>
-                        </button>
-                        <button class="text-custom-blue hover:text-blue-800">
-                          <i class="fas fa-bell"></i>
-                        </button>
-                      </td>
-                    </tr>
-                  </tbody>
-                </table>
-              </div>
-            </div>
-          </div>
-
-          <!-- Recent Submissions -->
-          <div class="mb-8">
-            <div class="bg-white rounded-lg shadow">
-              <div class="p-6 border-b border-gray-200">
-                <h2 class="text-xl font-semibold text-gray-700">
-                  Recent Submissions
-                </h2>
-              </div>
-              <div class="overflow-x-auto">
-                <table class="min-w-full divide-y divide-gray-200">
-                  <thead class="bg-gray-50">
-                    <tr>
-                      <th
-                        scope="col"
-                        class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider"
-                      >
-                        Faculty
-                      </th>
-                      <th
-                        scope="col"
-                        class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider"
-                      >
-                        Deliverable
-                      </th>
-                      <th
-                        scope="col"
-                        class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider"
-                      >
-                        Date Submitted
-                      </th>
-                      <th
-                        scope="col"
-                        class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider"
-                      >
-                        Status
-                      </th>
-                      <th
-                        scope="col"
-                        class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider"
-                      >
-                        Action
-                      </th>
-                    </tr>
-                  </thead>
-                  <tbody class="bg-white divide-y divide-gray-200">
-                    <tr>
-                      <td class="px-6 py-4 whitespace-nowrap">
+                <!-- Summary Stats -->
+                <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-6">
+                    <div class="dashboard-card blue bg-white rounded-lg shadow-sm p-6 card-hover">
                         <div class="flex items-center">
-                          <div
-                            class="flex-shrink-0 h-10 w-10 rounded-full bg-gray-200 flex items-center justify-center"
-                          >
-                            <span class="text-sm font-medium text-gray-500"
-                              >JD</span
-                            >
-                          </div>
-                          <div class="ml-4">
-                            <div class="text-sm font-medium text-gray-900">
-                              Dr. John Doe
+                            <div class="p-3 rounded-full bg-blue-100 text-custom-blue mr-4">
+                                <i class="fas fa-file-alt text-xl"></i>
                             </div>
-                            <div class="text-xs text-gray-500">
-                              Computer Science
+                            <div>
+                                <p class="text-sm text-gray-500 font-medium">Total Submissions</p>
+                                <p class="text-2xl font-bold">48</p>
                             </div>
-                          </div>
                         </div>
-                      </td>
-                      <td class="px-6 py-4 whitespace-nowrap">
-                        <div class="text-sm text-gray-900">Syllabus</div>
-                        <div class="text-xs text-gray-500">
-                          CS101 - Introduction to Programming
+                        <div class="mt-4 flex items-center">
+                            <span class="text-green-500 font-semibold text-sm">+12%</span>
+                            <span class="text-sm text-gray-500 ml-1">from last month</span>
                         </div>
-                      </td>
-                      <td
-                        class="px-6 py-4 whitespace-nowrap text-sm text-gray-500"
-                      >
-                        May 31, 2025 (11:30 AM)
-                      </td>
-                      <td class="px-6 py-4 whitespace-nowrap">
-                        <span
-                          class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-green-100 text-green-800"
-                        >
-                          Approved
-                        </span>
-                      </td>
-                      <td class="px-6 py-4 whitespace-nowrap text-sm">
-                        <a
-                          href="dean-review.html"
-                          class="text-custom-blue hover:text-blue-800"
-                        >
-                          View
-                        </a>
-                      </td>
-                    </tr>
-                    <tr>
-                      <td class="px-6 py-4 whitespace-nowrap">
+                    </div>
+
+                    <div class="dashboard-card green bg-white rounded-lg shadow-sm p-6 card-hover">
                         <div class="flex items-center">
-                          <div
-                            class="flex-shrink-0 h-10 w-10 rounded-full bg-gray-200 flex items-center justify-center"
-                          >
-                            <span class="text-sm font-medium text-gray-500"
-                              >JS</span
-                            >
-                          </div>
-                          <div class="ml-4">
-                            <div class="text-sm font-medium text-gray-900">
-                              Prof. Jane Smith
+                            <div class="p-3 rounded-full bg-green-100 text-custom-green mr-4">
+                                <i class="fas fa-check-circle text-xl"></i>
                             </div>
-                            <div class="text-xs text-gray-500">Mathematics</div>
-                          </div>
+                            <div>
+                                <p class="text-sm text-gray-500 font-medium">Approved</p>
+                                <p class="text-2xl font-bold">23</p>
+                            </div>
                         </div>
-                      </td>
-                      <td class="px-6 py-4 whitespace-nowrap">
-                        <div class="text-sm text-gray-900">Course SLM</div>
-                        <div class="text-xs text-gray-500">
-                          MATH201 - Calculus II
+                        <div class="mt-4 flex items-center">
+                            <span class="text-green-500 font-semibold text-sm">48%</span>
+                            <span class="text-sm text-gray-500 ml-1">completion rate</span>
                         </div>
-                      </td>
-                      <td
-                        class="px-6 py-4 whitespace-nowrap text-sm text-gray-500"
-                      >
-                        May 30, 2025 (2:15 PM)
-                      </td>
-                      <td class="px-6 py-4 whitespace-nowrap">
-                        <span
-                          class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-yellow-100 text-yellow-800"
-                        >
-                          Pending Review
-                        </span>
-                      </td>
-                      <td class="px-6 py-4 whitespace-nowrap text-sm">
-                        <a
-                          href="dean-review.html"
-                          class="text-custom-blue hover:text-blue-800"
-                        >
-                          Review
-                        </a>
-                      </td>
-                    </tr>
-                    <tr>
-                      <td class="px-6 py-4 whitespace-nowrap">
+                    </div>
+
+                    <div class="dashboard-card yellow bg-white rounded-lg shadow-sm p-6 card-hover">
                         <div class="flex items-center">
-                          <div
-                            class="flex-shrink-0 h-10 w-10 rounded-full bg-gray-200 flex items-center justify-center"
-                          >
-                            <span class="text-sm font-medium text-gray-500"
-                              >RJ</span
-                            >
-                          </div>
-                          <div class="ml-4">
-                            <div class="text-sm font-medium text-gray-900">
-                              Dr. Robert Johnson
+                            <div class="p-3 rounded-full bg-yellow-100 text-custom-yellow mr-4">
+                                <i class="fas fa-sync-alt text-xl"></i>
                             </div>
-                            <div class="text-xs text-gray-500">Physics</div>
-                          </div>
+                            <div>
+                                <p class="text-sm text-gray-500 font-medium">Pending Review</p>
+                                <p class="text-2xl font-bold">15</p>
+                            </div>
                         </div>
-                      </td>
-                      <td class="px-6 py-4 whitespace-nowrap">
-                        <div class="text-sm text-gray-900">
-                          Table of Specifications
+                        <div class="mt-4 flex items-center">
+                            <span class="text-yellow-500 font-semibold text-sm">31%</span>
+                            <span class="text-sm text-gray-500 ml-1">of total submissions</span>
                         </div>
-                        <div class="text-xs text-gray-500">
-                          PHYS202 - Electromagnetism
+                    </div>
+
+                    <div class="dashboard-card red bg-white rounded-lg shadow-sm p-6 card-hover">
+                        <div class="flex items-center">
+                            <div class="p-3 rounded-full bg-red-100 text-red-500 mr-4">
+                                <i class="fas fa-exclamation-circle text-xl"></i>
+                            </div>
+                            <div>
+                                <p class="text-sm text-gray-500 font-medium">Needs Revision</p>
+                                <p class="text-2xl font-bold">10</p>
+                            </div>
                         </div>
-                      </td>
-                      <td
-                        class="px-6 py-4 whitespace-nowrap text-sm text-gray-500"
-                      >
-                        May 29, 2025 (9:45 AM)
-                      </td>
-                      <td class="px-6 py-4 whitespace-nowrap">
-                        <span
-                          class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-red-100 text-red-800"
-                        >
-                          Needs Revision
-                        </span>
-                      </td>
-                      <td class="px-6 py-4 whitespace-nowrap text-sm">
-                        <a
-                          href="dean-review.html"
-                          class="text-custom-blue hover:text-blue-800"
-                        >
-                          View
-                        </a>
-                      </td>
-                    </tr>
-                  </tbody>
-                </table>
-              </div>
-              <div class="p-4 border-t border-gray-200 text-center">
-                <a
-                  href="dean-review.html"
-                  class="text-custom-blue hover:text-blue-800 text-sm font-medium"
-                >
-                  View All Submissions <i class="fas fa-arrow-right ml-1"></i>
-                </a>
-              </div>
-            </div>
-          </div>
-        </main>
-      </div>
+                        <div class="mt-4 flex items-center">
+                            <span class="text-red-500 font-semibold text-sm">21%</span>
+                            <span class="text-sm text-gray-500 ml-1">need improvements</span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="grid grid-cols-1 lg:grid-cols-3 gap-6 mb-6">
+                    <!-- Progress Chart -->
+                    <div class="lg:col-span-2">
+                        <div class="bg-white rounded-lg shadow-sm p-6 h-full">
+                            <div class="flex items-center justify-between mb-4">
+                                <h2 class="text-lg font-semibold text-gray-700">Submission Progress</h2>
+                                <div class="flex items-center space-x-2">
+                                    <div class="flex items-center">
+                                        <span class="h-3 w-3 bg-custom-green rounded-sm mr-1"></span>
+                                        <span class="text-xs text-gray-500">Approved</span>
+                                    </div>
+                                    <div class="flex items-center">
+                                        <span class="h-3 w-3 bg-custom-yellow rounded-sm mr-1"></span>
+                                        <span class="text-xs text-gray-500">Pending</span>
+                                    </div>
+                                    <div class="flex items-center">
+                                        <span class="h-3 w-3 bg-gray-300 rounded-sm mr-1"></span>
+                                        <span class="text-xs text-gray-500">Not Submitted</span>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="h-64">
+                                <canvas id="submissionChart"></canvas>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Upcoming Deadlines -->
+                    <div class="lg:col-span-1">
+                        <div class="bg-white rounded-lg shadow-sm p-6 h-full">
+                            <div class="flex items-center justify-between mb-4">
+                                <h2 class="text-lg font-semibold text-gray-700">Upcoming Deadlines</h2>
+                                <a href="#" class="text-sm text-custom-blue hover:underline">View All</a>
+                            </div>
+                            <div class="space-y-4">
+                                <div class="deadline-item p-3 rounded-lg border border-gray-200 flex items-center justify-between">
+                                    <div>
+                                        <p class="font-medium text-gray-800">Syllabus</p>
+                                        <p class="text-sm text-gray-500">June 15, 2025</p>
+                                    </div>
+                                    <div class="text-right">
+                                        <span class="bg-red-100 text-red-700 text-xs font-medium py-1 px-2 rounded">14 days left</span>
+                                    </div>
+                                </div>
+                                <div class="deadline-item p-3 rounded-lg border border-gray-200 flex items-center justify-between">
+                                    <div>
+                                        <p class="font-medium text-gray-800">Course SLM</p>
+                                        <p class="text-sm text-gray-500">June 30, 2025</p>
+                                    </div>
+                                    <div class="text-right">
+                                        <span class="bg-yellow-100 text-yellow-700 text-xs font-medium py-1 px-2 rounded">29 days left</span>
+                                    </div>
+                                </div>
+                                <div class="deadline-item p-3 rounded-lg border border-gray-200 flex items-center justify-between">
+                                    <div>
+                                        <p class="font-medium text-gray-800">TOS</p>
+                                        <p class="text-sm text-gray-500">July 15, 2025</p>
+                                    </div>
+                                    <div class="text-right">
+                                        <span class="bg-green-100 text-green-700 text-xs font-medium py-1 px-2 rounded">44 days left</span>
+                                    </div>
+                                </div>
+                                <div class="deadline-item p-3 rounded-lg border border-gray-200 flex items-center justify-between">
+                                    <div>
+                                        <p class="font-medium text-gray-800">Exam Materials</p>
+                                        <p class="text-sm text-gray-500">August 10, 2025</p>
+                                    </div>
+                                    <div class="text-right">
+                                        <span class="bg-green-100 text-green-700 text-xs font-medium py-1 px-2 rounded">70 days left</span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Deadline Management -->
+                <div class="mb-6">
+                    <div class="bg-white rounded-lg shadow-sm overflow-hidden">
+                        <div class="flex justify-between items-center p-6 border-b border-gray-200">
+                            <h2 class="text-lg font-semibold text-gray-700">Manage Deadlines</h2>
+                            <button class="bg-custom-blue text-white py-2 px-4 rounded hover:bg-blue-700 transition-all duration-200 flex items-center">
+                                <i class="fas fa-plus mr-2"></i> Set New Deadline
+                            </button>
+                        </div>
+                        <div class="overflow-x-auto">
+                            <table class="min-w-full divide-y divide-gray-200">
+                                <thead class="bg-gray-50">
+                                    <tr>
+                                        <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Deliverable</th>
+                                        <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Current Deadline</th>
+                                        <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Submissions</th>
+                                        <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Completion</th>
+                                        <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Actions</th>
+                                    </tr>
+                                </thead>
+                                <tbody class="bg-white divide-y divide-gray-200">
+                                    <tr class="table-row-hover">
+                                        <td class="px-6 py-4 whitespace-nowrap">
+                                            <div class="text-sm font-medium text-gray-900">Syllabus</div>
+                                            <div class="text-xs text-gray-500">First Term 2024-2025</div>
+                                        </td>
+                                        <td class="px-6 py-4 whitespace-nowrap">
+                                            <div class="text-sm text-gray-900">June 15, 2025</div>
+                                            <div class="text-xs text-custom-blue">14 days remaining</div>
+                                        </td>
+                                        <td class="px-6 py-4 whitespace-nowrap">
+                                            <div class="text-sm text-gray-900">12/15</div>
+                                        </td>
+                                        <td class="px-6 py-4 whitespace-nowrap">
+                                            <div class="w-full bg-gray-200 rounded-full h-2">
+                                                <div class="bg-custom-green rounded-full h-2" style="width: 80%"></div>
+                                            </div>
+                                            <div class="text-xs text-gray-500 mt-1">80% complete</div>
+                                        </td>
+                                        <td class="px-6 py-4 whitespace-nowrap text-sm">
+                                            <button class="text-custom-blue hover:text-blue-800 mr-3 action-button">
+                                                <i class="fas fa-edit"></i>
+                                            </button>
+                                            <button class="text-custom-blue hover:text-blue-800 action-button">
+                                                <i class="fas fa-bell"></i>
+                                            </button>
+                                        </td>
+                                    </tr>
+                                    <tr class="table-row-hover">
+                                        <td class="px-6 py-4 whitespace-nowrap">
+                                            <div class="text-sm font-medium text-gray-900">Course SLM</div>
+                                            <div class="text-xs text-gray-500">First Term 2024-2025</div>
+                                        </td>
+                                        <td class="px-6 py-4 whitespace-nowrap">
+                                            <div class="text-sm text-gray-900">June 30, 2025</div>
+                                            <div class="text-xs text-custom-blue">29 days remaining</div>
+                                        </td>
+                                        <td class="px-6 py-4 whitespace-nowrap">
+                                            <div class="text-sm text-gray-900">8/15</div>
+                                        </td>
+                                        <td class="px-6 py-4 whitespace-nowrap">
+                                            <div class="w-full bg-gray-200 rounded-full h-2">
+                                                <div class="bg-custom-green rounded-full h-2" style="width: 53%"></div>
+                                            </div>
+                                            <div class="text-xs text-gray-500 mt-1">53% complete</div>
+                                        </td>
+                                        <td class="px-6 py-4 whitespace-nowrap text-sm">
+                                            <button class="text-custom-blue hover:text-blue-800 mr-3 action-button">
+                                                <i class="fas fa-edit"></i>
+                                            </button>
+                                            <button class="text-custom-blue hover:text-blue-800 action-button">
+                                                <i class="fas fa-bell"></i>
+                                            </button>
+                                        </td>
+                                    </tr>
+                                    <tr class="table-row-hover">
+                                        <td class="px-6 py-4 whitespace-nowrap">
+                                            <div class="text-sm font-medium text-gray-900">Table of Specifications</div>
+                                            <div class="text-xs text-gray-500">First Term 2024-2025</div>
+                                        </td>
+                                        <td class="px-6 py-4 whitespace-nowrap">
+                                            <div class="text-sm text-gray-900">July 15, 2025</div>
+                                            <div class="text-xs text-custom-blue">44 days remaining</div>
+                                        </td>
+                                        <td class="px-6 py-4 whitespace-nowrap">
+                                            <div class="text-sm text-gray-900">3/15</div>
+                                        </td>
+                                        <td class="px-6 py-4 whitespace-nowrap">
+                                            <div class="w-full bg-gray-200 rounded-full h-2">
+                                                <div class="bg-custom-green rounded-full h-2" style="width: 20%"></div>
+                                            </div>
+                                            <div class="text-xs text-gray-500 mt-1">20% complete</div>
+                                        </td>
+                                        <td class="px-6 py-4 whitespace-nowrap text-sm">
+                                            <button class="text-custom-blue hover:text-blue-800 mr-3 action-button">
+                                                <i class="fas fa-edit"></i>
+                                            </button>
+                                            <button class="text-custom-blue hover:text-blue-800 action-button">
+                                                <i class="fas fa-bell"></i>
+                                            </button>
+                                        </td>
+                                    </tr>
+                                    <tr class="table-row-hover">
+                                        <td class="px-6 py-4 whitespace-nowrap">
+                                            <div class="text-sm font-medium text-gray-900">Exam Materials</div>
+                                            <div class="text-xs text-gray-500">First Term 2024-2025</div>
+                                        </td>
+                                        <td class="px-6 py-4 whitespace-nowrap">
+                                            <div class="text-sm text-gray-900">August 10, 2025</div>
+                                            <div class="text-xs text-custom-blue">70 days remaining</div>
+                                        </td>
+                                        <td class="px-6 py-4 whitespace-nowrap">
+                                            <div class="text-sm text-gray-900">0/15</div>
+                                        </td>
+                                        <td class="px-6 py-4 whitespace-nowrap">
+                                            <div class="w-full bg-gray-200 rounded-full h-2">
+                                                <div class="bg-custom-green rounded-full h-2" style="width: 0%"></div>
+                                            </div>
+                                            <div class="text-xs text-gray-500 mt-1">0% complete</div>
+                                        </td>
+                                        <td class="px-6 py-4 whitespace-nowrap text-sm">
+                                            <button class="text-custom-blue hover:text-blue-800 mr-3 action-button">
+                                                <i class="fas fa-edit"></i>
+                                            </button>
+                                            <button class="text-custom-blue hover:text-blue-800 action-button">
+                                                <i class="fas fa-bell"></i>
+                                            </button>
+                                        </td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Recent Activity -->
+                <div class="mb-6">
+                    <div class="bg-white rounded-lg shadow-sm p-6">
+                        <div class="flex justify-between items-center mb-4">
+                            <h2 class="text-lg font-semibold text-gray-700">Recent Activity</h2>
+                            <a href="#" class="text-sm text-custom-blue hover:underline">View All</a>
+                        </div>
+                        <div class="space-y-4">
+                            <div class="flex items-start">
+                                <div class="flex-shrink-0 mr-3">
+                                    <div class="w-10 h-10 rounded-full bg-blue-100 flex items-center justify-center text-custom-blue">
+                                        <i class="fas fa-file-upload"></i>
+                                    </div>
+                                </div>
+                                <div class="flex-1">
+                                    <p class="text-sm font-medium text-gray-800">Dr. Sarah Chen submitted <span class="font-semibold">PHYS101 Syllabus</span></p>
+                                    <p class="text-xs text-gray-500">Today at 10:45 AM</p>
+                                </div>
+                                <div class="ml-3">
+                                    <span class="bg-blue-100 text-custom-blue text-xs font-medium py-1 px-2 rounded">New</span>
+                                </div>
+                            </div>
+                            <div class="flex items-start">
+                                <div class="flex-shrink-0 mr-3">
+                                    <div class="w-10 h-10 rounded-full bg-green-100 flex items-center justify-center text-custom-green">
+                                        <i class="fas fa-check-circle"></i>
+                                    </div>
+                                </div>
+                                <div class="flex-1">
+                                    <p class="text-sm font-medium text-gray-800">You approved <span class="font-semibold">CHEM202 SLM</span> by Dr. John Mitchell</p>
+                                    <p class="text-xs text-gray-500">Yesterday at 2:30 PM</p>
+                                </div>
+                            </div>
+                            <div class="flex items-start">
+                                <div class="flex-shrink-0 mr-3">
+                                    <div class="w-10 h-10 rounded-full bg-red-100 flex items-center justify-center text-red-500">
+                                        <i class="fas fa-undo"></i>
+                                    </div>
+                                </div>
+                                <div class="flex-1">
+                                    <p class="text-sm font-medium text-gray-800">You requested revisions for <span class="font-semibold">MATH303 Syllabus</span> by Dr. Emily Rodriguez</p>
+                                    <p class="text-xs text-gray-500">May 31, 2025 at 9:15 AM</p>
+                                </div>
+                            </div>
+                            <div class="flex items-start">
+                                <div class="flex-shrink-0 mr-3">
+                                    <div class="w-10 h-10 rounded-full bg-purple-100 flex items-center justify-center text-purple-500">
+                                        <i class="fas fa-comment"></i>
+                                    </div>
+                                </div>
+                                <div class="flex-1">
+                                    <p class="text-sm font-medium text-gray-800">Dr. Alex Wong commented on <span class="font-semibold">BIO101 TOS</span></p>
+                                    <p class="text-xs text-gray-500">May 30, 2025 at 4:20 PM</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Department Performance -->
+                <div class="mb-6">
+                    <div class="bg-white rounded-lg shadow-sm overflow-hidden">
+                        <div class="p-6 border-b border-gray-200">
+                            <h2 class="text-lg font-semibold text-gray-700">Department Performance</h2>
+                        </div>
+                        <div class="overflow-x-auto">
+                            <table class="min-w-full divide-y divide-gray-200">
+                                <thead class="bg-gray-50">
+                                    <tr>
+                                        <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Department</th>
+                                        <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Total Faculty</th>
+                                        <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Submissions</th>
+                                        <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Approval Rate</th>
+                                        <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Status</th>
+                                    </tr>
+                                </thead>
+                                <tbody class="bg-white divide-y divide-gray-200">
+                                    <tr class="table-row-hover">
+                                        <td class="px-6 py-4 whitespace-nowrap">
+                                            <div class="flex items-center">
+                                                <div class="text-sm font-medium text-gray-900">Physics Department</div>
+                                            </div>
+                                        </td>
+                                        <td class="px-6 py-4 whitespace-nowrap">
+                                            <div class="text-sm text-gray-900">6</div>
+                                        </td>
+                                        <td class="px-6 py-4 whitespace-nowrap">
+                                            <div class="text-sm text-gray-900">18/24</div>
+                                        </td>
+                                        <td class="px-6 py-4 whitespace-nowrap">
+                                            <div class="w-full bg-gray-200 rounded-full h-2 mb-1">
+                                                <div class="bg-custom-green rounded-full h-2" style="width: 83%"></div>
+                                            </div>
+                                            <div class="text-xs text-gray-500">83% approved</div>
+                                        </td>
+                                        <td class="px-6 py-4 whitespace-nowrap">
+                                            <span class="bg-green-100 text-green-800 text-xs font-medium px-2.5 py-0.5 rounded">On Track</span>
+                                        </td>
+                                    </tr>
+                                    <tr class="table-row-hover">
+                                        <td class="px-6 py-4 whitespace-nowrap">
+                                            <div class="flex items-center">
+                                                <div class="text-sm font-medium text-gray-900">Chemistry Department</div>
+                                            </div>
+                                        </td>
+                                        <td class="px-6 py-4 whitespace-nowrap">
+                                            <div class="text-sm text-gray-900">5</div>
+                                        </td>
+                                        <td class="px-6 py-4 whitespace-nowrap">
+                                            <div class="text-sm text-gray-900">12/20</div>
+                                        </td>
+                                        <td class="px-6 py-4 whitespace-nowrap">
+                                            <div class="w-full bg-gray-200 rounded-full h-2 mb-1">
+                                                <div class="bg-custom-green rounded-full h-2" style="width: 75%"></div>
+                                            </div>
+                                            <div class="text-xs text-gray-500">75% approved</div>
+                                        </td>
+                                        <td class="px-6 py-4 whitespace-nowrap">
+                                            <span class="bg-green-100 text-green-800 text-xs font-medium px-2.5 py-0.5 rounded">On Track</span>
+                                        </td>
+                                    </tr>
+                                    <tr class="table-row-hover">
+                                        <td class="px-6 py-4 whitespace-nowrap">
+                                            <div class="flex items-center">
+                                                <div class="text-sm font-medium text-gray-900">Biology Department</div>
+                                            </div>
+                                        </td>
+                                        <td class="px-6 py-4 whitespace-nowrap">
+                                            <div class="text-sm text-gray-900">4</div>
+                                        </td>
+                                        <td class="px-6 py-4 whitespace-nowrap">
+                                            <div class="text-sm text-gray-900">8/16</div>
+                                        </td>
+                                        <td class="px-6 py-4 whitespace-nowrap">
+                                            <div class="w-full bg-gray-200 rounded-full h-2 mb-1">
+                                                <div class="bg-custom-yellow rounded-full h-2" style="width: 50%"></div>
+                                            </div>
+                                            <div class="text-xs text-gray-500">50% approved</div>
+                                        </td>
+                                        <td class="px-6 py-4 whitespace-nowrap">
+                                            <span class="bg-yellow-100 text-yellow-800 text-xs font-medium px-2.5 py-0.5 rounded">Attention Needed</span>
+                                        </td>
+                                    </tr>
+                                    <tr class="table-row-hover">
+                                        <td class="px-6 py-4 whitespace-nowrap">
+                                            <div class="flex items-center">
+                                                <div class="text-sm font-medium text-gray-900">Mathematics Department</div>
+                                            </div>
+                                        </td>
+                                        <td class="px-6 py-4 whitespace-nowrap">
+                                            <div class="text-sm text-gray-900">5</div>
+                                        </td>
+                                        <td class="px-6 py-4 whitespace-nowrap">
+                                            <div class="text-sm text-gray-900">10/20</div>
+                                        </td>
+                                        <td class="px-6 py-4 whitespace-nowrap">
+                                            <div class="w-full bg-gray-200 rounded-full h-2 mb-1">
+                                                <div class="bg-red-500 rounded-full h-2" style="width: 40%"></div>
+                                            </div>
+                                            <div class="text-xs text-gray-500">40% approved</div>
+                                        </td>
+                                        <td class="px-6 py-4 whitespace-nowrap">
+                                            <span class="bg-red-100 text-red-800 text-xs font-medium px-2.5 py-0.5 rounded">At Risk</span>
+                                        </td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </main>           
+        </div>
     </div>
 
     <script>
-      // Initialize chart
-      document.addEventListener("DOMContentLoaded", function () {
-        const ctx = document.getElementById("submissionChart").getContext("2d");
-        const chart = new Chart(ctx, {
-          type: "bar",
-          data: {
-            labels: [
-              "Syllabus",
-              "Course SLM",
-              "Table of Specifications",
-              "Exam Materials",
-            ],
-            datasets: [
-              {
-                label: "Approved",
-                data: [12, 8, 3, 0],
-                backgroundColor: "#51B63F",
-              },
-              {
-                label: "Pending Review",
-                data: [0, 0, 0, 0],
-                backgroundColor: "#FAC801",
-              },
-              {
-                label: "Needs Revision",
-                data: [0, 0, 0, 0],
-                backgroundColor: "#723E2C",
-              },
-              {
-                label: "Not Submitted",
-                data: [3, 7, 12, 15],
-                backgroundColor: "#e5e7eb",
-              },
-            ],
-          },
-          options: {
-            responsive: true,
-            maintainAspectRatio: false,
-            scales: {
-              x: {
-                stacked: true,
-              },
-              y: {
-                stacked: true,
-                beginAtZero: true,
-                max: 15,
-              },
+        // Chart JS Configuration for Submission Progress
+        const ctx = document.getElementById('submissionChart').getContext('2d');
+        const submissionChart = new Chart(ctx, {
+            type: 'bar',
+            data: {
+                labels: ['Physics', 'Chemistry', 'Biology', 'Mathematics'],
+                datasets: [
+                    {
+                        label: 'Approved',
+                        data: [15, 9, 4, 4],
+                        backgroundColor: '#51B63F',
+                        borderColor: '#51B63F',
+                        borderWidth: 1
+                    },
+                    {
+                        label: 'Pending',
+                        data: [3, 3, 4, 6],
+                        backgroundColor: '#FAC801',
+                        borderColor: '#FAC801',
+                        borderWidth: 1
+                    },
+                    {
+                        label: 'Not Submitted',
+                        data: [6, 8, 8, 10],
+                        backgroundColor: '#E5E7EB',
+                        borderColor: '#E5E7EB',
+                        borderWidth: 1
+                    }
+                ]
             },
-          },
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                scales: {
+                    x: {
+                        stacked: true,
+                        grid: {
+                            display: false
+                        }
+                    },
+                    y: {
+                        stacked: true,
+                        beginAtZero: true,
+                        grid: {
+                            borderDash: [2, 2]
+                        },
+                        ticks: {
+                            stepSize: 5
+                        }
+                    }
+                },
+                plugins: {
+                    legend: {
+                        position: 'top',
+                        labels: {
+                            boxWidth: 10,
+                            usePointStyle: true,
+                            pointStyle: 'circle'
+                        }
+                    }
+                }
+            }
         });
-      });
+
+        // Mobile menu toggle
+        document.querySelector('.md\\:hidden').addEventListener('click', function() {
+            const sidebar = document.querySelector('.animated-bg');
+            sidebar.classList.toggle('hidden');
+            sidebar.classList.toggle('fixed');
+            sidebar.classList.toggle('inset-0');
+            sidebar.classList.toggle('z-50');
+            sidebar.classList.toggle('md:relative');
+            sidebar.classList.toggle('md:flex');
+        });
     </script>
-  </body>
+</body>
 </html>

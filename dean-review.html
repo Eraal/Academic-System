@@ -6,216 +6,703 @@
     <title>Review Submissions - Academic Deliverables System</title>
     <link href="https://cdnjs.cloudflare.com/ajax/libs/tailwindcss/2.2.19/tailwind.min.css" rel="stylesheet">
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css" rel="stylesheet">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/3.7.0/chart.min.js"></script>
     <style>
-        .bg-custom-blue { background-color: #2A4E92; }
+        @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap');
+        
+        body {
+            font-family: 'Poppins', sans-serif;
+        }
+        
+        .bg-custom-blue { background-color: #1A3A7C; }
         .bg-custom-brown { background-color: #723E2C; }
         .bg-custom-green { background-color: #51B63F; }
         .bg-custom-light-blue { background-color: #62BEE3; }
         .bg-custom-yellow { background-color: #FAC801; }
-        .text-custom-blue { color: #2A4E92; }
+        .text-custom-blue { color: #1A3A7C; }
         .text-custom-brown { color: #723E2C; }
         .text-custom-green { color: #51B63F; }
         .text-custom-light-blue { color: #62BEE3; }
         .text-custom-yellow { color: #FAC801; }
-        .border-custom-blue { border-color: #2A4E92; }
+        .border-custom-blue { border-color: #1A3A7C; }
+        .border-custom-green { border-color: #51B63F; }
+        .border-custom-yellow { border-color: #FAC801; }
+        .border-custom-brown { border-color: #723E2C; }
+        
+        .sidebar-active {
+            position: relative;
+            background-color: rgba(255, 255, 255, 0.15);
+            font-weight: 500;
+        }
+        
+        .sidebar-active::before {
+            content: "";
+            position: absolute;
+            left: 0;
+            top: 0;
+            height: 100%;
+            width: 4px;
+            background-color: #FAC801;
+        }
+        
+        .card-hover:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
+            transition: all 0.3s ease;
+        }
+        
+        .progress-bar {
+            height: 6px;
+            border-radius: 3px;
+            background-color: #E5E7EB;
+            overflow: hidden;
+        }
+        
+        .progress-fill {
+            height: 100%;
+            border-radius: 3px;
+        }
+        
+        .animated-bg {
+            background: linear-gradient(270deg, #1A3A7C, #2B4D8F);
+            background-size: 400% 400%;
+            animation: gradient 15s ease infinite;
+        }
+        
+        @keyframes gradient {
+            0% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+            100% { background-position: 0% 50%; }
+        }
+        
+        .status-badge {
+            display: inline-flex;
+            align-items: center;
+            padding: 0.5rem 0.75rem;
+            border-radius: 9999px;
+            font-weight: 500;
+            font-size: 0.75rem;
+            line-height: 1rem;
+        }
+        
+        .status-badge i {
+            margin-right: 0.375rem;
+        }
+        
+        .top-nav-decoration {
+            position: absolute;
+            top: 0;
+            right: 0;
+            height: 100%;
+            width: 30%;
+            background: linear-gradient(90deg, rgba(26, 58, 124, 0), rgba(26, 58, 124, 0.1));
+            z-index: 1;
+        }
+
+        .table-row-hover:hover {
+            background-color: rgba(26, 58, 124, 0.05);
+            transition: all 0.2s ease;
+        }
+        
+        .dashboard-card {
+            transition: all 0.3s ease;
+            border-left: 4px solid transparent;
+        }
+        
+        .dashboard-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1);
+        }
+        
+        .dashboard-card.blue {
+            border-left-color: #1A3A7C;
+        }
+        
+        .dashboard-card.green {
+            border-left-color: #51B63F;
+        }
+        
+        .dashboard-card.yellow {
+            border-left-color: #FAC801;
+        }
+        
+        .dashboard-card.red {
+            border-left-color: #EF4444;
+        }
+        
+        .notification-dot {
+            position: absolute;
+            top: 0;
+            right: 0;
+            height: 8px;
+            width: 8px;
+            background-color: #FAC801;
+            border-radius: 50%;
+        }
+        
+        .deadline-item {
+            transition: all 0.2s ease;
+        }
+        
+        .deadline-item:hover {
+            background-color: rgba(26, 58, 124, 0.05);
+        }
+        
+        .action-button {
+            transition: all 0.2s ease;
+        }
+        
+        .action-button:hover {
+            transform: translateY(-2px);
+        }
+        
+        .review-item {
+            transition: all 0.3s ease;
+            border-left: 4px solid transparent;
+        }
+        
+        .review-item:hover {
+            background-color: rgba(26, 58, 124, 0.05);
+            border-left-color: #1A3A7C;
+        }
+        
+        .review-badge {
+            transition: all 0.2s ease;
+        }
+        
+        .review-badge:hover {
+            transform: scale(1.05);
+        }
+        
+        .review-card {
+            transition: all 0.3s ease;
+        }
+        
+        .review-card:hover {
+            box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1);
+        }
+        
+        .btn-hover:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+            transition: all 0.2s ease;
+        }
+        
+        .file-preview {
+            transition: all 0.3s ease;
+        }
+        
+        .file-preview:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1);
+        }
     </style>
 </head>
 <body class="bg-gray-100">
     <div class="flex h-screen">
         <!-- Sidebar -->
-        <div class="bg-custom-blue text-white w-64 flex-shrink-0 hidden md:block">
-            <div class="p-4 text-center border-b border-blue-700">
-                <h2 class="font-bold text-xl">Academic System</h2>
-                <p class="text-sm text-custom-yellow mt-1">Role: Dean</p>
+        <div class="animated-bg text-white w-72 flex-shrink-0 hidden md:flex md:flex-col shadow-lg">
+            <div class="p-6 flex items-center space-x-3 border-b border-opacity-20 border-blue-300">
+                <div class="bg-white rounded-lg p-2 shadow-md">
+                    <svg class="w-8 h-8 text-custom-blue" fill="currentColor" viewBox="0 0 20 20">
+                        <path d="M10.394 2.08a1 1 0 00-.788 0L3.493 5.05a1 1 0 000 1.79l6.113 2.97a1 1 0 00.788 0l6.113-2.97a1 1 0 000-1.79l-6.113-2.97z"></path>
+                        <path d="M3.05 7.097a1 1 0 00-1.45.9v5.322a1 1 0 00.55.851l6.113 2.97a1 1 0 00.9 0l6.113-2.97a1 1 0 00.55-.851V7.997a1 1 0 00-1.45-.9l-5.714 2.775a1 1 0 01-.9 0L3.05 7.097z"></path>
+                    </svg>
+                </div>
+                <div>
+                    <h2 class="font-bold text-xl tracking-wide">AcadSystem</h2>
+                    <div class="flex items-center mt-1">
+                        <span class="h-2 w-2 bg-custom-yellow rounded-full"></span>
+                        <p class="text-xs font-medium ml-1.5 text-blue-100">Dean Portal</p>
+                    </div>
+                </div>
             </div>
-            <nav class="mt-6">
-                <ul>
-                    <li class="mb-1">
-                        <a href="dean-dashboard.html" class="block py-3 px-4 hover:bg-blue-800 transition-colors">
-                            <i class="fas fa-tachometer-alt mr-2"></i> Dashboard
-                        </a>
-                    </li>
-                    <li class="mb-1">
-                        <a href="dean-review.html" class="block py-3 px-4 bg-blue-800 transition-colors">
-                            <i class="fas fa-clipboard-check mr-2"></i> Review Submissions
-                        </a>
-                    </li>
-                    <li class="mb-1">
-                        <a href="loginpage.html" class="block py-3 px-4 hover:bg-blue-800 transition-colors">
-                            <i class="fas fa-sign-out-alt mr-2"></i> Logout
-                        </a>
-                    </li>
-                </ul>
-            </nav>
+            
+            <div class="px-3 py-6 flex-1">
+                <div class="mb-3 px-3">
+                    <h3 class="text-xs uppercase tracking-wider text-blue-200 font-semibold">Main Navigation</h3>
+                </div>
+                <nav>
+                    <ul class="space-y-1">
+                        <li>
+                            <a href="dean-dashboard.html" class="flex items-center py-3 px-4 rounded-lg text-blue-100 hover:bg-white hover:bg-opacity-10 transition-all duration-200">
+                                <i class="fas fa-tachometer-alt w-5 text-center"></i>
+                                <span class="ml-3">Dashboard</span>
+                            </a>
+                        </li>
+                        <li>
+                            <a href="dean-review.html" class="sidebar-active flex items-center py-3 px-4 rounded-lg text-white transition-all duration-200">
+                                <i class="fas fa-clipboard-check w-5 text-center"></i>
+                                <span class="ml-3">Review Submissions</span>
+                            </a>
+                        </li>
+                       
+                        <li class="pt-6 mt-6 border-t border-blue-800">
+                            <a href="loginpage.html" class="flex items-center py-3 px-4 rounded-lg text-blue-100 hover:bg-white hover:bg-opacity-10 transition-all duration-200">
+                                <i class="fas fa-sign-out-alt w-5 text-center"></i>
+                                <span class="ml-3">Logout</span>
+                            </a>
+                        </li>
+                    </ul>
+                </nav>
+            </div>
         </div>
 
         <!-- Main Content -->
         <div class="flex-1 flex flex-col overflow-hidden">
             <!-- Top Navigation -->
-            <header class="bg-white shadow-sm">
-                <div class="flex items-center justify-between p-4">
+            <header class="bg-white shadow-sm relative">
+                <div class="top-nav-decoration"></div>
+                <div class="flex items-center justify-between px-6 py-4">
                     <div class="flex items-center">
                         <button class="md:hidden mr-4 text-gray-600">
                             <i class="fas fa-bars"></i>
                         </button>
                         <h1 class="text-xl font-semibold text-gray-800">Review Submissions</h1>
                     </div>
-                    <div>
-                        <span class="bg-custom-blue text-white py-1 px-3 rounded-full text-sm">
-                            Dean
-                        </span>
+                    <div class="flex items-center space-x-4">
+                        <div class="relative">
+                            <button class="text-gray-500 hover:text-gray-600">
+                                <i class="fas fa-bell text-xl"></i>
+                                <span class="absolute top-0 right-0 h-2 w-2 rounded-full bg-custom-yellow"></span>
+                            </button>
+                        </div>
+                        <div class="flex items-center space-x-2">
+                            <div class="w-10 h-10 rounded-full bg-custom-blue flex items-center justify-center text-white">
+                                <span class="font-medium text-sm">DJ</span>
+                            </div>
+                            <div class="hidden md:block">
+                                <p class="text-sm font-medium text-gray-700">Dr. Jesse Dean</p>
+                                <p class="text-xs text-gray-500">College of Science</p>
+                            </div>
+                        </div>
                     </div>
                 </div>
             </header>
 
             <!-- Content Area -->
             <main class="flex-1 overflow-y-auto p-6">
+                <!-- Header & Stats -->
+                <div class="mb-6">
+                    <div class="flex flex-col md:flex-row md:items-center md:justify-between mb-4">
+                        <div>
+                            <h2 class="text-2xl font-bold text-gray-800">Pending Reviews</h2>
+                            <p class="text-gray-500">Manage and review academic deliverables submitted by faculty</p>
+                        </div>
+                        <div class="mt-3 md:mt-0">
+                            <div class="bg-white rounded-lg shadow px-4 py-3 flex items-center space-x-6">
+                                <div class="text-center">
+                                    <p class="text-sm text-gray-500">Total</p>
+                                    <p class="font-bold text-xl text-custom-blue">12</p>
+                                </div>
+                                <div class="text-center">
+                                    <p class="text-sm text-gray-500">Pending</p>
+                                    <p class="font-bold text-xl text-custom-yellow">5</p>
+                                </div>
+                                <div class="text-center">
+                                    <p class="text-sm text-gray-500">Approved</p>
+                                    <p class="font-bold text-xl text-custom-green">7</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
                 <!-- Filters -->
-                <div class="mb-6 bg-white p-4 rounded shadow">
+                <div class="mb-6 bg-white p-5 rounded-lg shadow-sm">
                     <div class="flex flex-col md:flex-row md:items-center md:justify-between">
-                        <div class="flex flex-col md:flex-row md:items-center mb-4 md:mb-0">
-                            <label class="mr-3 mb-2 md:mb-0 font-medium">Filter by:</label>
-                            <select class="border rounded p-2 mr-3 mb-2 md:mb-0">
+                        <div class="flex flex-col md:flex-row md:items-center mb-4 md:mb-0 space-y-3 md:space-y-0 md:space-x-3">
+                            <label class="font-medium text-gray-700">Filter by:</label>
+                            <select class="border rounded-lg px-4 py-2 bg-gray-50 focus:outline-none focus:ring-2 focus:ring-custom-blue focus:border-custom-blue">
                                 <option>All Deliverables</option>
                                 <option>Syllabus</option>
                                 <option>SLM</option>
                                 <option>TOS</option>
                                 <option>Exams</option>
                             </select>
-                            <select class="border rounded p-2 mr-3 mb-2 md:mb-0">
+                            <select class="border rounded-lg px-4 py-2 bg-gray-50 focus:outline-none focus:ring-2 focus:ring-custom-blue focus:border-custom-blue">
                                 <option>All Status</option>
                                 <option>Submitted</option>
                                 <option>Approved</option>
                                 <option>Needs Revision</option>
                             </select>
                         </div>
-                        <div class="flex items-center">
-                            <input type="text" placeholder="Search faculty" class="border rounded p-2 w-full">
+                        <div class="relative">
+                            <input type="text" placeholder="Search submissions..." class="w-full md:w-64 border rounded-lg pl-10 pr-4 py-2 bg-gray-50 focus:outline-none focus:ring-2 focus:ring-custom-blue focus:border-custom-blue">
+                            <i class="fas fa-search absolute left-3 top-3 text-gray-400"></i>
                         </div>
                     </div>
                 </div>
 
                 <!-- Current Review Item -->
-                <div class="bg-white rounded shadow mb-6">
-                    <div class="bg-custom-blue text-white p-4 rounded-t">
-                        <div class="flex flex-col md:flex-row md:items-center md:justify-between">
+                <div class="bg-white rounded-lg shadow-sm mb-6 overflow-hidden review-card">
+                    <div class="bg-custom-blue text-white p-5 rounded-t-lg relative">
+                        <div class="absolute top-0 right-0 h-full w-1/4 bg-gradient-to-r from-transparent to-blue-800 opacity-50"></div>
+                        <div class="flex flex-col md:flex-row md:items-center md:justify-between relative z-10">
                             <div>
-                                <h2 class="text-xl font-semibold">Course Syllabus - CS 101</h2>
-                                <p class="text-sm">Submitted by: Dr. Jane Smith | April 20, 2025</p>
+                                <div class="flex items-center">
+                                    <span class="inline-block bg-custom-yellow text-custom-blue px-3 py-1 rounded-full text-xs font-semibold mr-3">CS101</span>
+                                    <h2 class="text-xl font-semibold">Introduction to Computer Science - Syllabus</h2>
+                                </div>
+                                <div class="mt-2 flex items-center text-blue-100">
+                                    <img src="/api/placeholder/40/40" class="w-6 h-6 rounded-full mr-2" alt="Faculty Avatar">
+                                    <p class="text-sm">Submitted by: <span class="font-medium">Dr. Jane Smith</span> | April 20, 2025</p>
+                                </div>
                             </div>
-                            <span class="inline-block bg-custom-yellow text-custom-blue font-semibold px-3 py-1 rounded-full mt-2 md:mt-0">Pending Review</span>
+                            <span class="inline-flex items-center bg-custom-yellow text-custom-blue font-semibold px-4 py-2 rounded-full mt-3 md:mt-0 shadow-sm review-badge">
+                                <i class="fas fa-clock mr-2"></i>
+                                Pending Review
+                            </span>
                         </div>
                     </div>
                     
                     <div class="p-6">
-                        <div class="mb-6">
-                            <h3 class="text-lg font-semibold mb-3">Document Preview</h3>
-                            <div class="border rounded p-4 bg-gray-50 h-64 flex items-center justify-center">
-                                <div class="text-center">
-                                    <i class="far fa-file-pdf text-custom-brown text-5xl mb-3"></i>
-                                    <p class="font-medium">CS101_Syllabus_Spring2025.pdf</p>
-                                    <p class="text-sm text-gray-500">1.2 MB - Uploaded April 20, 2025</p>
-                                    <button class="mt-3 bg-custom-blue text-white px-4 py-2 rounded hover:bg-blue-700">
-                                        <i class="fas fa-download mr-1"></i> Download
-                                    </button>
+                        <div class="mb-6 grid grid-cols-1 md:grid-cols-2 gap-6">
+                            <div>
+                                <h3 class="text-lg font-semibold mb-3 flex items-center">
+                                    <i class="far fa-file-alt text-custom-blue mr-2"></i>
+                                    Document Preview
+                                </h3>
+                                <div class="border rounded-lg p-5 bg-gray-50 h-64 flex items-center justify-center file-preview">
+                                    <div class="text-center">
+                                        <div class="bg-white rounded-lg p-4 shadow-sm mb-3 inline-block">
+                                            <i class="far fa-file-pdf text-custom-brown text-4xl"></i>
+                                        </div>
+                                        <p class="font-medium text-gray-800">CS101_Syllabus_Spring2025.pdf</p>
+                                        <p class="text-sm text-gray-500 mb-3">1.2 MB - Uploaded April 20, 2025</p>
+                                        <div class="flex items-center justify-center space-x-3">
+                                            <button class="bg-custom-blue text-white px-4 py-2 rounded-lg hover:bg-blue-800 transition-colors flex items-center btn-hover">
+                                                <i class="fas fa-download mr-2"></i> Download
+                                            </button>
+                                            <button class="bg-gray-200 text-gray-700 px-4 py-2 rounded-lg hover:bg-gray-300 transition-colors flex items-center btn-hover">
+                                                <i class="fas fa-eye mr-2"></i> Preview
+                                            </button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            <div>
+                                <h3 class="text-lg font-semibold mb-3 flex items-center">
+                                    <i class="far fa-comment-alt text-custom-blue mr-2"></i>
+                                    Review Comments
+                                </h3>
+                                <div class="space-y-4">
+                                    <textarea class="w-full border rounded-lg p-4 h-40 focus:outline-none focus:ring-2 focus:ring-custom-blue focus:border-custom-blue" placeholder="Enter your feedback or revision requests here..."></textarea>
+                                    <div class="flex items-center text-sm text-gray-600">
+                                        <i class="fas fa-info-circle mr-2 text-custom-blue"></i>
+                                        <p>Your comments will be visible to the faculty member submitting this document.</p>
+                                    </div>
                                 </div>
                             </div>
                         </div>
 
-                        <div class="mb-6">
-                            <h3 class="text-lg font-semibold mb-3">Review Comments</h3>
-                            <textarea class="w-full border rounded p-3 h-36" placeholder="Enter your feedback or revision requests here..."></textarea>
-                        </div>
-
-                        <div class="flex flex-col md:flex-row md:justify-between">
-                            <div class="mb-4 md:mb-0">
-                                <button class="bg-custom-green text-white px-6 py-2 rounded mr-2 hover:bg-green-600">
-                                    <i class="fas fa-check mr-1"></i> Approve
+                        <div class="flex flex-col md:flex-row md:justify-between border-t pt-5">
+                            <div class="mb-4 md:mb-0 flex items-center space-x-3">
+                                <button class="bg-custom-green text-white px-6 py-3 rounded-lg hover:bg-green-600 transition-colors flex items-center shadow-sm btn-hover">
+                                    <i class="fas fa-check mr-2"></i> Approve
                                 </button>
-                                <button class="bg-custom-brown text-white px-6 py-2 rounded hover:bg-red-700">
-                                    <i class="fas fa-undo mr-1"></i> Request Revision
+                                <button class="bg-custom-brown text-white px-6 py-3 rounded-lg hover:bg-red-700 transition-colors flex items-center shadow-sm btn-hover">
+                                    <i class="fas fa-undo mr-2"></i> Request Revision
+                                </button>
+                                <button class="border border-gray-300 text-gray-700 px-6 py-3 rounded-lg hover:bg-gray-100 transition-colors flex items-center btn-hover">
+                                    <i class="fas fa-save mr-2"></i> Save Draft
                                 </button>
                             </div>
-                            <button class="text-custom-blue hover:underline">
-                                <i class="fas fa-history mr-1"></i> View Revision History
-                            </button>
+                            <div class="flex items-center">
+                                <button class="text-custom-blue hover:underline flex items-center">
+                                    <i class="fas fa-history mr-2"></i> View Revision History
+                                </button>
+                            </div>
                         </div>
                     </div>
                 </div>
 
                 <!-- Pending Review List -->
-                <div class="bg-white rounded shadow">
-                    <div class="bg-gray-100 p-4 border-b">
-                        <h3 class="font-semibold">Other Pending Reviews (4)</h3>
+                <div class="bg-white rounded-lg shadow-sm">
+                    <div class="bg-gray-50 p-4 border-b flex items-center justify-between">
+                        <h3 class="font-semibold text-gray-700 flex items-center">
+                            <i class="fas fa-list-ul text-custom-blue mr-2"></i>
+                            Other Pending Reviews
+                        </h3>
+                        <span class="bg-custom-blue text-white text-xs font-medium px-3 py-1 rounded-full">4 Items</span>
                     </div>
                     <div class="divide-y">
                         <!-- Review Item 1 -->
-                        <div class="p-4 hover:bg-gray-50 cursor-pointer">
+                        <div class="p-5 hover:bg-gray-50 cursor-pointer review-item">
                             <div class="flex flex-col md:flex-row md:items-center md:justify-between">
-                                <div>
-                                    <h4 class="font-medium">SLM - Mathematics 202</h4>
-                                    <p class="text-sm text-gray-600">Dr. Robert Johnson | April 19, 2025</p>
+                                <div class="flex items-center">
+                                    <div class="mr-4 bg-custom-blue bg-opacity-10 text-custom-blue rounded-lg p-3">
+                                        <i class="fas fa-book-open text-xl"></i>
+                                    </div>
+                                    <div>
+                                        <div class="flex items-center">
+                                            <span class="bg-custom-blue text-white text-xs px-2 py-1 rounded mr-2">SLM</span>
+                                            <h4 class="font-medium">Mathematics 202 - Self Learning Module</h4>
+                                        </div>
+                                        <p class="text-sm text-gray-600 mt-1">
+                                            <i class="fas fa-user-tie mr-1 text-gray-400"></i>
+                                            Dr. Robert Johnson | 
+                                            <i class="far fa-calendar-alt mr-1 text-gray-400"></i>
+                                            April 19, 2025
+                                        </p>
+                                    </div>
                                 </div>
-                                <div class="flex items-center mt-2 md:mt-0">
-                                    <span class="bg-custom-yellow text-custom-blue px-3 py-1 rounded-full text-sm font-medium">Pending</span>
-                                    <button class="ml-3 text-custom-blue hover:underline text-sm">
-                                        <i class="fas fa-eye"></i> Review
+                                <div class="flex items-center mt-3 md:mt-0">
+                                    <span class="bg-custom-yellow text-custom-blue px-3 py-1 rounded-full text-xs font-medium mr-3">Pending</span>
+                                    <button class="text-custom-blue hover:text-blue-800 flex items-center text-sm font-medium">
+                                        <i class="fas fa-eye mr-1"></i> Review
                                     </button>
                                 </div>
                             </div>
                         </div>
                         
                         <!-- Review Item 2 -->
-                        <div class="p-4 hover:bg-gray-50 cursor-pointer">
+                        <div class="p-5 hover:bg-gray-50 cursor-pointer review-item">
                             <div class="flex flex-col md:flex-row md:items-center md:justify-between">
-                                <div>
-                                    <h4 class="font-medium">TOS - Biology 110</h4>
-                                    <p class="text-sm text-gray-600">Dr. Maria Garcia | April 18, 2025</p>
+                                <div class="flex items-center">
+                                    <div class="mr-4 bg-custom-blue bg-opacity-10 text-custom-blue rounded-lg p-3">
+                                        <i class="fas fa-tasks text-xl"></i>
+                                    </div>
+                                    <div>
+                                        <div class="flex items-center">
+                                            <span class="bg-custom-brown text-white text-xs px-2 py-1 rounded mr-2">TOS</span>
+                                            <h4 class="font-medium">Biology 110 - Table of Specifications</h4>
+                                        </div>
+                                        <p class="text-sm text-gray-600 mt-1">
+                                            <i class="fas fa-user-tie mr-1 text-gray-400"></i>
+                                            Dr. Maria Garcia | 
+                                            <i class="far fa-calendar-alt mr-1 text-gray-400"></i>
+                                            April 18, 2025
+                                        </p>
+                                    </div>
                                 </div>
-                                <div class="flex items-center mt-2 md:mt-0">
-                                    <span class="bg-custom-yellow text-custom-blue px-3 py-1 rounded-full text-sm font-medium">Pending</span>
-                                    <button class="ml-3 text-custom-blue hover:underline text-sm">
-                                        <i class="fas fa-eye"></i> Review
+                                <div class="flex items-center mt-3 md:mt-0">
+                                    <span class="bg-custom-yellow text-custom-blue px-3 py-1 rounded-full text-xs font-medium mr-3">Pending</span>
+                                    <button class="text-custom-blue hover:text-blue-800 flex items-center text-sm font-medium">
+                                        <i class="fas fa-eye mr-1"></i> Review
                                     </button>
                                 </div>
                             </div>
                         </div>
                         
                         <!-- Review Item 3 -->
-                        <div class="p-4 hover:bg-gray-50 cursor-pointer">
+                        <div class="p-5 hover:bg-gray-50 cursor-pointer review-item">
                             <div class="flex flex-col md:flex-row md:items-center md:justify-between">
-                                <div>
-                                    <h4 class="font-medium">Exams - Physics 301</h4>
-                                    <p class="text-sm text-gray-600">Dr. Thomas Lee | April 18, 2025</p>
+                                <div class="flex items-center">
+                                    <div class="mr-4 bg-custom-blue bg-opacity-10 text-custom-blue rounded-lg p-3">
+                                        <i class="fas fa-file-alt text-xl"></i>
+                                    </div>
+                                    <div>
+                                        <div class="flex items-center">
+                                            <span class="bg-custom-green text-white text-xs px-2 py-1 rounded mr-2">EXAM</span>
+                                            <h4 class="font-medium">Physics 301 - Final Examination</h4>
+                                        </div>
+                                        <p class="text-sm text-gray-600 mt-1">
+                                            <i class="fas fa-user-tie mr-1 text-gray-400"></i>
+                                            Dr. Thomas Lee | 
+                                            <i class="far fa-calendar-alt mr-1 text-gray-400"></i>
+                                            April 18, 2025
+                                        </p>
+                                    </div>
                                 </div>
-                                <div class="flex items-center mt-2 md:mt-0">
-                                    <span class="bg-custom-light-blue text-white px-3 py-1 rounded-full text-sm font-medium">Resubmitted</span>
-                                    <button class="ml-3 text-custom-blue hover:underline text-sm">
-                                        <i class="fas fa-eye"></i> Review
+                                <div class="flex items-center mt-3 md:mt-0">
+                                    <span class="bg-custom-light-blue text-white px-3 py-1 rounded-full text-xs font-medium mr-3">Resubmitted</span>
+                                    <button class="text-custom-blue hover:text-blue-800 flex items-center text-sm font-medium">
+                                        <i class="fas fa-eye mr-1"></i> Review
                                     </button>
                                 </div>
                             </div>
                         </div>
                         
                         <!-- Review Item 4 -->
-                        <div class="p-4 hover:bg-gray-50 cursor-pointer">
+                        <div class="p-5 hover:bg-gray-50 cursor-pointer review-item">
                             <div class="flex flex-col md:flex-row md:items-center md:justify-between">
-                                <div>
-                                    <h4 class="font-medium">Syllabus - English 205</h4>
-                                    <p class="text-sm text-gray-600">Dr. Sarah Williams | April 17, 2025</p>
+                                <div class="flex items-center">
+                                    <div class="mr-4 bg-custom-blue bg-opacity-10 text-custom-blue rounded-lg p-3">
+                                        <i class="fas fa-list-alt text-xl"></i>
+                                    </div>
+                                    <div>
+                                        <div class="flex items-center">
+                                            <span class="bg-custom-blue text-white text-xs px-2 py-1 rounded mr-2">SYL</span>
+                                            <h4 class="font-medium">English 205 - Course Syllabus</h4>
+                                        </div>
+                                        <p class="text-sm text-gray-600 mt-1">
+                                            <i class="fas fa-user-tie mr-1 text-gray-400"></i>
+                                            Dr. Sarah Williams | 
+                                            <i class="far fa-calendar-alt mr-1 text-gray-400"></i>
+                                            April 17, 2025
+                                        </p>
+                                    </div>
                                 </div>
-                                <div class="flex items-center mt-2 md:mt-0">
-                                    <span class="bg-custom-yellow text-custom-blue px-3 py-1 rounded-full text-sm font-medium">Pending</span>
-                                    <button class="ml-3 text-custom-blue hover:underline text-sm">
-                                        <i class="fas fa-eye"></i> Review
+                                <div class="flex items-center mt-3 md:mt-0">
+                                    <span class="bg-custom-yellow text-custom-blue px-3 py-1 rounded-full text-xs font-medium mr-3">Pending</span>
+                                    <button class="text-custom-blue hover:text-blue-800 flex items-center text-sm font-medium">
+                                        <i class="fas fa-eye mr-1"></i> Review
                                     </button>
                                 </div>
                             </div>
                         </div>
                     </div>
+                    
+                    <!-- Pagination -->
+                    <div class="p-4 border-t flex flex-col md:flex-row md:items-center md:justify-between">
+                        <div class="text-sm text-gray-500 mb-3 md:mb-0">
+                            Showing 1-4 of 4 results
+                        </div>
+                        <div class="flex items-center justify-center space-x-2">
+                            <button class="border rounded-lg px-3 py-1 text-gray-500 bg-gray-50 hover:bg-gray-100 transition-colors disabled:opacity-50" disabled>
+                                <i class="fas fa-chevron-left"></i>
+                            </button>
+                            <button class="border rounded-lg px-3 py-1 bg-custom-blue text-white hover:bg-blue-800 transition-colors">1</button>
+                            <button class="border rounded-lg px-3 py-1 text-gray-500 bg-gray-50 hover:bg-gray-100 transition-colors disabled:opacity-50" disabled>
+                                <i class="fas fa-chevron-right"></i>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Recently Approved Reviews -->
+                <div class="bg-white rounded-lg shadow-sm mt-6">
+                    <div class="bg-gray-50 p-4 border-b flex items-center justify-between">
+                        <h3 class="font-semibold text-gray-700 flex items-center">
+                            <i class="fas fa-check-circle text-custom-green mr-2"></i>
+                            Recently Approved Submissions
+                        </h3>
+                        <a href="#" class="text-custom-blue hover:underline text-sm font-medium">View All</a>
+                    </div>
+                    <div class="overflow-x-auto">
+                        <table class="min-w-full divide-y divide-gray-200">
+                            <thead class="bg-gray-50">
+                                <tr>
+                                    <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Document</th>
+                                    <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Faculty</th>
+                                    <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Department</th>
+                                    <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Date Approved</th>
+                                    <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Action</th>
+                                </tr>
+                            </thead>
+                            <tbody class="bg-white divide-y divide-gray-200">
+                                <tr class="table-row-hover">
+                                    <td class="px-6 py-4 whitespace-nowrap">
+                                        <div class="flex items-center">
+                                            <div class="flex-shrink-0 h-10 w-10 bg-blue-100 rounded-lg flex items-center justify-center text-custom-blue">
+                                                <i class="fas fa-file-alt"></i>
+                                            </div>
+                                            <div class="ml-4">
+                                                <div class="text-sm font-medium text-gray-900">Chemistry 101 - Syllabus</div>
+                                                <div class="text-xs text-gray-500">Spring 2025</div>
+                                            </div>
+                                        </div>
+                                    </td>
+                                    <td class="px-6 py-4 whitespace-nowrap">
+                                        <div class="text-sm text-gray-900">Dr. Michael Chen</div>
+                                    </td>
+                                    <td class="px-6 py-4 whitespace-nowrap">
+                                        <div class="text-sm text-gray-900">Chemistry</div>
+                                    </td>
+                                    <td class="px-6 py-4 whitespace-nowrap">
+                                        <div class="text-sm text-gray-900">April 15, 2025</div>
+                                    </td>
+                                    <td class="px-6 py-4 whitespace-nowrap text-sm">
+                                        <button class="text-custom-blue hover:text-blue-800">View Details</button>
+                                    </td>
+                                </tr>
+                                <tr class="table-row-hover">
+                                    <td class="px-6 py-4 whitespace-nowrap">
+                                        <div class="flex items-center">
+                                            <div class="flex-shrink-0 h-10 w-10 bg-green-100 rounded-lg flex items-center justify-center text-custom-green">
+                                                <i class="fas fa-tasks"></i>
+                                            </div>
+                                            <div class="ml-4">
+                                                <div class="text-sm font-medium text-gray-900">Psychology 202 - TOS</div>
+                                                <div class="text-xs text-gray-500">Spring 2025</div>
+                                            </div>
+                                        </div>
+                                    </td>
+                                    <td class="px-6 py-4 whitespace-nowrap">
+                                        <div class="text-sm text-gray-900">Dr. Elizabeth Brown</div>
+                                    </td>
+                                    <td class="px-6 py-4 whitespace-nowrap">
+                                        <div class="text-sm text-gray-900">Psychology</div>
+                                    </td>
+                                    <td class="px-6 py-4 whitespace-nowrap">
+                                        <div class="text-sm text-gray-900">April 14, 2025</div>
+                                    </td>
+                                    <td class="px-6 py-4 whitespace-nowrap text-sm">
+                                        <button class="text-custom-blue hover:text-blue-800">View Details</button>
+                                    </td>
+                                </tr>
+                                <tr class="table-row-hover">
+                                    <td class="px-6 py-4 whitespace-nowrap">
+                                        <div class="flex items-center">
+                                            <div class="flex-shrink-0 h-10 w-10 bg-yellow-100 rounded-lg flex items-center justify-center text-custom-yellow">
+                                                <i class="fas fa-book-open"></i>
+                                            </div>
+                                            <div class="ml-4">
+                                                <div class="text-sm font-medium text-gray-900">History 305 - SLM</div>
+                                                <div class="text-xs text-gray-500">Spring 2025</div>
+                                            </div>
+                                        </div>
+                                    </td>
+                                    <td class="px-6 py-4 whitespace-nowrap">
+                                        <div class="text-sm text-gray-900">Dr. David Wilson</div>
+                                    </td>
+                                    <td class="px-6 py-4 whitespace-nowrap">
+                                        <div class="text-sm text-gray-900">History</div>
+                                    </td>
+                                    <td class="px-6 py-4 whitespace-nowrap">
+                                        <div class="text-sm text-gray-900">April 13, 2025</div>
+                                    </td>
+                                    <td class="px-6 py-4 whitespace-nowrap text-sm">
+                                        <button class="text-custom-blue hover:text-blue-800">View Details</button>
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
                 </div>
             </main>
+            
+           
         </div>
     </div>
+
+    <script>
+        // Mobile sidebar toggle
+        document.addEventListener('DOMContentLoaded', function() {
+            const menuButton = document.querySelector('button.md\\:hidden');
+            const sidebar = document.querySelector('.animated-bg');
+            
+            menuButton.addEventListener('click', function() {
+                sidebar.classList.toggle('hidden');
+            });
+            
+            // Chart initialization for analytics
+            const ctx = document.getElementById('reviewChart');
+            if(ctx) {
+                new Chart(ctx, {
+                    type: 'doughnut',
+                    data: {
+                        labels: ['Approved', 'Pending', 'Needs Revision'],
+                        datasets: [{
+                            data: [7, 5, 0],
+                            backgroundColor: ['#51B63F', '#FAC801', '#723E2C'],
+                            borderWidth: 0
+                        }]
+                    },
+                    options: {
+                        responsive: true,
+                        cutout: '70%',
+                        plugins: {
+                            legend: {
+                                position: 'bottom'
+                            }
+                        }
+                    }
+                });
+            }
+        });
+    </script>
 </body>
 </html>

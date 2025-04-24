@@ -1,3 +1,5 @@
+<!-- faculty-upload.html -->
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -7,244 +9,643 @@
     <link href="https://cdnjs.cloudflare.com/ajax/libs/tailwindcss/2.2.19/tailwind.min.css" rel="stylesheet">
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css" rel="stylesheet">
     <style>
-        .bg-custom-blue { background-color: #2A4E92; }
+        @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap');
+        
+        body {
+            font-family: 'Poppins', sans-serif;
+        }
+        
+        .bg-custom-blue { background-color: #1A3A7C; }
         .bg-custom-brown { background-color: #723E2C; }
         .bg-custom-green { background-color: #51B63F; }
         .bg-custom-light-blue { background-color: #62BEE3; }
         .bg-custom-yellow { background-color: #FAC801; }
-        .text-custom-blue { color: #2A4E92; }
+        .text-custom-blue { color: #1A3A7C; }
         .text-custom-brown { color: #723E2C; }
         .text-custom-green { color: #51B63F; }
         .text-custom-light-blue { color: #62BEE3; }
         .text-custom-yellow { color: #FAC801; }
-        .border-custom-blue { border-color: #2A4E92; }
+        .border-custom-blue { border-color: #1A3A7C; }
+        
+        .sidebar-active {
+            position: relative;
+            background-color: rgba(255, 255, 255, 0.15);
+            font-weight: 500;
+        }
+        
+        .sidebar-active::before {
+            content: "";
+            position: absolute;
+            left: 0;
+            top: 0;
+            height: 100%;
+            width: 4px;
+            background-color: #FAC801;
+        }
+        
+        .card-hover:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
+        }
+        
+        .progress-bar {
+            height: 6px;
+            border-radius: 3px;
+            background-color: #E5E7EB;
+            overflow: hidden;
+        }
+        
+        .progress-fill {
+            height: 100%;
+            border-radius: 3px;
+        }
+        
+        .file-upload {
+            position: relative;
+            overflow: hidden;
+            display: inline-block;
+        }
+        
+        .file-upload input[type=file] {
+            position: absolute;
+            left: 0;
+            top: 0;
+            opacity: 0;
+            width: 100%;
+            height: 100%;
+            cursor: pointer;
+        }
+        
+        .animated-bg {
+            background: linear-gradient(270deg, #1A3A7C, #2B4D8F);
+            background-size: 400% 400%;
+            animation: gradient 15s ease infinite;
+        }
+        
+        @keyframes gradient {
+            0% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+            100% { background-position: 0% 50%; }
+        }
+        
+        .status-badge {
+            display: inline-flex;
+            align-items: center;
+            padding: 0.5rem 0.75rem;
+            border-radius: 9999px;
+            font-weight: 500;
+            font-size: 0.75rem;
+            line-height: 1rem;
+        }
+        
+        .status-badge i {
+            margin-right: 0.375rem;
+        }
+        
+        .card-decoration {
+            position: absolute;
+            top: 0;
+            right: 0;
+            width: 100px;
+            height: 100px;
+            opacity: 0.05;
+            transform: translate(30%, -30%);
+        }
+        
+        .top-nav-decoration {
+            position: absolute;
+            top: 0;
+            right: 0;
+            height: 100%;
+            width: 30%;
+            background: linear-gradient(90deg, rgba(26, 58, 124, 0), rgba(26, 58, 124, 0.1));
+            z-index: 1;
+        }
     </style>
 </head>
 <body class="bg-gray-100">
     <div class="flex h-screen">
         <!-- Sidebar -->
-        <div class="bg-custom-blue text-white w-64 flex-shrink-0 hidden md:block">
-            <div class="p-4 text-center border-b border-blue-700">
-                <h2 class="font-bold text-xl">Academic System</h2>
-                <p class="text-sm text-custom-yellow mt-1">Role: Faculty</p>
+        <div class="animated-bg text-white w-72 flex-shrink-0 hidden md:flex md:flex-col shadow-lg">
+            <div class="p-6 flex items-center space-x-3 border-b border-opacity-20 border-blue-300">
+                <div class="bg-white rounded-lg p-2 shadow-md">
+                    <svg class="w-8 h-8 text-custom-blue" fill="currentColor" viewBox="0 0 20 20">
+                        <path d="M10.394 2.08a1 1 0 00-.788 0L3.493 5.05a1 1 0 000 1.79l6.113 2.97a1 1 0 00.788 0l6.113-2.97a1 1 0 000-1.79l-6.113-2.97z"></path>
+                        <path d="M3.05 7.097a1 1 0 00-1.45.9v5.322a1 1 0 00.55.851l6.113 2.97a1 1 0 00.9 0l6.113-2.97a1 1 0 00.55-.851V7.997a1 1 0 00-1.45-.9l-5.714 2.775a1 1 0 01-.9 0L3.05 7.097z"></path>
+                    </svg>
+                </div>
+                <div>
+                    <h2 class="font-bold text-xl tracking-wide">AcadSystem</h2>
+                    <div class="flex items-center mt-1">
+                        <span class="h-2 w-2 bg-green-400 rounded-full"></span>
+                        <p class="text-xs font-medium ml-1.5 text-blue-100">Faculty Portal</p>
+                    </div>
+                </div>
             </div>
-            <nav class="mt-6">
-                <ul>
-                    <li class="mb-1">
-                        <a href="faculty-dashboard.html" class="block py-3 px-4 hover:bg-blue-800 transition-colors">
-                            <i class="fas fa-tachometer-alt mr-2"></i> Dashboard
-                        </a>
-                    </li>
-                    <li class="mb-1">
-                        <a href="faculty-upload.html" class="block py-3 px-4 bg-blue-800 transition-colors">
-                            <i class="fas fa-upload mr-2"></i> Upload Deliverables
-                        </a>
-                    </li>
-                    <li class="mb-1">
-                        <a href="faculty-history.html" class="block py-3 px-4 hover:bg-blue-800 transition-colors">
-                            <i class="fas fa-history mr-2"></i> Submission History
-                        </a>
-                    </li>
-                    <li class="mb-1">
-                        <a href="loginpage.html" class="block py-3 px-4 hover:bg-blue-800 transition-colors">
-                            <i class="fas fa-sign-out-alt mr-2"></i> Logout
-                        </a>
-                    </li>
-                </ul>
-            </nav>
+            
+            <div class="px-3 py-6 flex-1">
+                <div class="mb-3 px-3">
+                    <h3 class="text-xs uppercase tracking-wider text-blue-200 font-semibold">Main Navigation</h3>
+                </div>
+                <nav>
+                    <ul class="space-y-1">
+                        <li>
+                            <a href="faculty-dashboard.html" class="flex items-center py-3 px-4 rounded-lg text-blue-100 hover:bg-white hover:bg-opacity-10 transition-all duration-200">
+                                <i class="fas fa-tachometer-alt w-5 text-center"></i>
+                                <span class="ml-3">Dashboard</span>
+                            </a>
+                        </li>
+                        <li>
+                            <a href="faculty-upload.html" class="sidebar-active flex items-center py-3 px-4 rounded-lg text-white transition-all duration-200">
+                                <i class="fas fa-upload w-5 text-center"></i>
+                                <span class="ml-3">Upload Deliverables</span>
+                            </a>
+                        </li>
+                        <li>
+                            <a href="faculty-history.html" class="flex items-center py-3 px-4 rounded-lg text-blue-100 hover:bg-white hover:bg-opacity-10 transition-all duration-200">
+                                <i class="fas fa-history w-5 text-center"></i>
+                                <span class="ml-3">Submission History</span>
+                            </a>
+                        </li>
+                        <li class="pt-6 mt-6 border-t border-blue-800">
+                            <a href="loginpage.html" class="flex items-center py-3 px-4 rounded-lg text-blue-100 hover:bg-white hover:bg-opacity-10 transition-all duration-200">
+                                <i class="fas fa-sign-out-alt w-5 text-center"></i>
+                                <span class="ml-3">Logout</span>
+                            </a>
+                        </li>
+                    </ul>
+                </nav>
+            </div>
+            
         </div>
 
         <!-- Main Content -->
         <div class="flex-1 flex flex-col overflow-hidden">
             <!-- Top Navigation -->
-            <header class="bg-white shadow-sm">
-                <div class="flex items-center justify-between p-4">
+            <header class="bg-white shadow-md relative z-10">
+                <div class="top-nav-decoration"></div>
+                <div class="flex items-center justify-between px-6 py-4">
                     <div class="flex items-center">
-                        <button class="md:hidden mr-4 text-gray-600">
+                        <button class="md:hidden mr-4 text-gray-600 focus:outline-none">
                             <i class="fas fa-bars"></i>
                         </button>
-                        <h1 class="text-xl font-semibold text-gray-800">Upload Deliverables</h1>
+                        <div>
+                            <h1 class="text-xl font-bold text-gray-800">Upload Deliverables</h1>
+                            <div class="flex items-center text-sm text-gray-500 mt-0.5">
+                                <i class="fas fa-home mr-1.5"></i>
+                                <span>Dashboard</span>
+                                <i class="fas fa-chevron-right mx-2 text-xs"></i>
+                                <span class="text-custom-blue font-medium">Upload Deliverables</span>
+                            </div>
+                        </div>
                     </div>
-                    <div>
-                        <span class="bg-custom-blue text-white py-1 px-3 rounded-full text-sm">
-                            Faculty
-                        </span>
+                    <div class="flex items-center space-x-4">
+                        <div class="relative">
+                            <button class="relative p-1 text-gray-400 hover:text-gray-600 focus:outline-none">
+                                <i class="fas fa-bell text-lg"></i>
+                                <span class="absolute top-0 right-0 h-2 w-2 rounded-full bg-red-500"></span>
+                            </button>
+                        </div>
+                        <div class="relative">
+                            <button class="relative p-1 text-gray-400 hover:text-gray-600 focus:outline-none">
+                                <i class="fas fa-envelope text-lg"></i>
+                                <span class="absolute top-0 right-0 h-2 w-2 rounded-full bg-custom-yellow"></span>
+                            </button>
+                        </div>
+                        <div class="border-l border-gray-200 h-8 mx-2"></div>
+
                     </div>
+                </div>
+                
+                <!-- Page Progress Indicator -->
+                <div class="h-1 w-full bg-gray-100">
+                    <div class="h-full bg-custom-blue w-3/4"></div>
                 </div>
             </header>
 
             <!-- Content Area -->
             <main class="flex-1 overflow-y-auto p-6">
                 <!-- Deadline Information -->
-                <div class="mb-6">
-                    <div class="bg-yellow-100 border-l-4 border-yellow-500 text-yellow-700 p-4" role="alert">
+                <div class="mb-8">
+                    <div class="bg-gradient-to-r from-blue-50 to-indigo-50 border-l-4 border-custom-blue rounded-lg shadow-sm p-5" role="alert">
                         <div class="flex items-center">
-                            <div class="flex-shrink-0">
-                                <i class="fas fa-clock"></i>
+                            <div class="flex-shrink-0 bg-custom-blue bg-opacity-10 p-3 rounded-full">
+                                <i class="fas fa-clock text-custom-blue text-xl"></i>
                             </div>
-                            <div class="ml-3">
-                                <p class="font-bold">Upcoming Deadlines</p>
-                                <p class="text-sm">Final Exam due in 5 days (April 30, 2025)</p>
-                                <p class="text-sm">Syllabus revision due in 5 days (April 30, 2025)</p>
+                            <div class="ml-4">
+                                <h3 class="font-semibold text-lg text-gray-800">Upcoming Deadlines</h3>
+                                <div class="mt-2 grid grid-cols-1 md:grid-cols-2 gap-3">
+                                    <div class="flex items-center">
+                                        <i class="fas fa-file-alt text-custom-yellow mr-2"></i>
+                                        <div>
+                                            <p class="text-sm font-medium">Final Exam</p>
+                                            <p class="text-xs text-gray-600">Due in 5 days (April 30, 2025)</p>
+                                        </div>
+                                    </div>
+                                    <div class="flex items-center">
+                                        <i class="fas fa-book text-custom-blue mr-2"></i>
+                                        <div>
+                                            <p class="text-sm font-medium">Syllabus Revision</p>
+                                            <p class="text-xs text-gray-600">Due in 5 days (April 30, 2025)</p>
+                                        </div>
+                                    </div>
+                                </div>
                             </div>
                         </div>
                     </div>
                 </div>
 
                 <!-- Upload Forms -->
-                <h2 class="text-xl font-semibold text-gray-700 mb-4">Upload Academic Deliverables</h2>
-                
-                <!-- Syllabus Upload -->
-                <div class="bg-white rounded-lg shadow p-6 mb-6">
-                    <div class="flex justify-between items-start mb-4">
-                        <div>
-                            <h3 class="font-semibold text-lg text-custom-blue">Syllabus</h3>
-                            <p class="text-sm text-gray-500 mt-1">Due: April 30, 2025</p>
-                        </div>
-                        <span class="bg-yellow-100 text-yellow-800 text-xs font-semibold px-2.5 py-0.5 rounded">
-                            Needs Revision
-                        </span>
-                    </div>
-                    
-                    <div class="mb-4">
-                        <p class="text-sm text-gray-600 mb-2">Revision Feedback:</p>
-                        <div class="bg-gray-50 p-3 rounded border border-gray-200 text-sm text-gray-700">
-                            <p>Please update course outcomes section to align with department guidelines. Add more detailed assessment criteria for student projects.</p>
-                            <p class="text-custom-brown font-medium mt-2">- Dean Smith, April 22, 2025</p>
-                        </div>
-                    </div>
-                    
-                    <div class="mb-4">
-                        <label class="block text-sm font-medium text-gray-700 mb-2">Upload Revised Syllabus:</label>
-                        <div class="flex items-center">
-                            <input type="file" class="flex-grow p-2 text-sm text-gray-500 file:mr-4 file:py-2 file:px-4 file:rounded file:border-0 file:text-sm file:font-semibold file:bg-custom-blue file:text-white hover:file:bg-blue-700" />
-                            <button class="ml-3 bg-custom-blue text-white py-2 px-4 rounded hover:bg-opacity-90 text-sm font-medium">
-                                <i class="fas fa-upload mr-1"></i> Submit
-                            </button>
-                        </div>
-                    </div>
-
-                    <div class="text-xs text-gray-500">
-                        <p>Previous version submitted on March 01, 2025</p>
+                <div class="flex items-center justify-between mb-6">
+                    <h2 class="text-2xl font-bold text-gray-800">Academic Deliverables</h2>
+                    <div class="flex items-center">
+                        <span class="text-sm text-gray-500 mr-3">Academic Year: 2024-2025</span>
+                        <span class="text-sm text-gray-500">Term: 2nd Semester</span>
                     </div>
                 </div>
                 
-                <!-- SLM Upload -->
-                <div class="bg-white rounded-lg shadow p-6 mb-6">
-                    <div class="flex justify-between items-start mb-4">
-                        <div>
-                            <h3 class="font-semibold text-lg text-custom-light-blue">Self-Learning Materials (SLM)</h3>
+                <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
+                    <!-- Syllabus Upload -->
+                    <div class="bg-white rounded-xl shadow-sm border border-gray-100 overflow-hidden transition-all duration-300 card-hover relative">
+                        <div class="card-decoration">
+                            <i class="fas fa-book text-custom-blue text-9xl"></i>
+                        </div>
+                        <div class="px-6 py-5 border-b border-gray-100">
+                            <div class="flex justify-between items-center">
+                                <h3 class="font-bold text-lg text-custom-blue flex items-center">
+                                    <i class="fas fa-book mr-2"></i>
+                                    Syllabus
+                                </h3>
+                                <span class="status-badge bg-yellow-100 text-yellow-800">
+                                    <i class="fas fa-exclamation-circle"></i>
+                                    Needs Revision
+                                </span>
+                            </div>
+                            <p class="text-sm text-gray-500 mt-1">Due: April 30, 2025</p>
+                        </div>
+                        
+                        <div class="p-6">
+                            <div class="mb-5">
+                                <h4 class="text-sm font-medium text-gray-700 mb-2">Revision Progress</h4>
+                                <div class="progress-bar">
+                                    <div class="progress-fill bg-yellow-500" style="width: 60%"></div>
+                                </div>
+                                <div class="flex justify-between text-xs text-gray-500 mt-1">
+                                    <span>60% Complete</span>
+                                    <span>5 days remaining</span>
+                                </div>
+                            </div>
+                            
+                            <div class="mb-5 bg-gray-50 p-4 rounded-lg border border-gray-100">
+                                <h4 class="text-sm font-medium text-gray-700 mb-2">Revision Feedback:</h4>
+                                <div class="text-sm text-gray-600">
+                                    <p>Please update course outcomes section to align with department guidelines. Add more detailed assessment criteria for student projects.</p>
+                                    <div class="flex items-center mt-3 text-xs text-custom-brown">
+                                        <img src="/api/placeholder/24/24" class="h-6 w-6 rounded-full mr-2" alt="Dean Smith" />
+                                        <span class="font-medium">Dean Smith</span>
+                                        <span class="mx-1">•</span>
+                                        <span>April 22, 2025</span>
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            <div class="mb-2">
+                                <label class="block text-sm font-medium text-gray-700 mb-2">Upload Revised Syllabus:</label>
+                                <div class="flex flex-col sm:flex-row sm:items-center space-y-3 sm:space-y-0 sm:space-x-3">
+                                    <div class="file-upload flex-grow">
+                                        <button class="w-full bg-gray-50 border border-gray-300 rounded-lg px-4 py-2.5 text-sm text-gray-500 font-medium hover:bg-gray-100 transition-colors flex items-center justify-center">
+                                            <i class="fas fa-cloud-upload-alt mr-2 text-custom-blue"></i>
+                                            Choose File
+                                        </button>
+                                        <input type="file" class="cursor-pointer" />
+                                    </div>
+                                    <button class="bg-custom-blue text-white py-2.5 px-4 rounded-lg hover:bg-opacity-90 text-sm font-medium transition-colors flex items-center justify-center">
+                                        <i class="fas fa-upload mr-1.5"></i> Submit
+                                    </button>
+                                </div>
+                            </div>
+
+                            <div class="text-xs text-gray-500 mt-3">
+                                <p class="flex items-center">
+                                    <i class="fas fa-history mr-1.5"></i>
+                                    Previous version submitted on March 01, 2025
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- SLM Upload -->
+                    <div class="bg-white rounded-xl shadow-sm border border-gray-100 overflow-hidden transition-all duration-300 card-hover relative">
+                        <div class="card-decoration">
+                            <i class="fas fa-book-reader text-custom-light-blue text-9xl"></i>
+                        </div>
+                        <div class="px-6 py-5 border-b border-gray-100">
+                            <div class="flex justify-between items-center">
+                                <h3 class="font-bold text-lg text-custom-light-blue flex items-center">
+                                    <i class="fas fa-book-reader mr-2"></i>
+                                    Self-Learning Materials
+                                </h3>
+                                <span class="status-badge bg-green-100 text-green-800">
+                                    <i class="fas fa-check-circle"></i>
+                                    Approved
+                                </span>
+                            </div>
                             <p class="text-sm text-gray-500 mt-1">Due: March 15, 2025</p>
                         </div>
-                        <span class="bg-green-100 text-green-800 text-xs font-semibold px-2.5 py-0.5 rounded">
-                            Approved
-                        </span>
-                    </div>
-                    
-                    <div class="mb-4">
-                        <p class="text-sm text-gray-600 mb-2">Feedback:</p>
-                        <div class="bg-gray-50 p-3 rounded border border-gray-200 text-sm text-gray-700">
-                            <p>Excellent work on the learning materials. The interactive elements are particularly well-designed.</p>
-                            <p class="text-custom-green font-medium mt-2">- Dean Smith, March 18, 2025</p>
-                        </div>
-                    </div>
-                    
-                    <div class="mb-4">
-                        <label class="block text-sm font-medium text-gray-700 mb-2">Upload New Version (Optional):</label>
-                        <div class="flex items-center">
-                            <input type="file" class="flex-grow p-2 text-sm text-gray-500 file:mr-4 file:py-2 file:px-4 file:rounded file:border-0 file:text-sm file:font-semibold file:bg-gray-400 file:text-white hover:file:bg-gray-500" disabled />
-                            <button class="ml-3 bg-gray-400 text-white py-2 px-4 rounded text-sm font-medium" disabled>
-                                <i class="fas fa-upload mr-1"></i> Submit
-                            </button>
-                        </div>
-                    </div>
+                        
+                        <div class="p-6">
+                            <div class="mb-5">
+                                <h4 class="text-sm font-medium text-gray-700 mb-2">Submission Status</h4>
+                                <div class="progress-bar">
+                                    <div class="progress-fill bg-green-500" style="width: 100%"></div>
+                                </div>
+                                <div class="flex justify-between text-xs text-gray-500 mt-1">
+                                    <span>100% Complete</span>
+                                    <span>Submitted on time</span>
+                                </div>
+                            </div>
+                            
+                            <div class="mb-5 bg-gray-50 p-4 rounded-lg border border-gray-100">
+                                <h4 class="text-sm font-medium text-gray-700 mb-2">Feedback:</h4>
+                                <div class="text-sm text-gray-600">
+                                    <p>Excellent work on the learning materials. The interactive elements are particularly well-designed.</p>
+                                    <div class="flex items-center mt-3 text-xs text-custom-green">
+                                        <img src="/api/placeholder/24/24" class="h-6 w-6 rounded-full mr-2" alt="Dean Smith" />
+                                        <span class="font-medium">Dean Smith</span>
+                                        <span class="mx-1">•</span>
+                                        <span>March 18, 2025</span>
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            <div class="mb-2">
+                                <label class="block text-sm font-medium text-gray-700 mb-2">Upload New Version (Optional):</label>
+                                <div class="flex flex-col sm:flex-row sm:items-center space-y-3 sm:space-y-0 sm:space-x-3 opacity-50">
+                                    <div class="file-upload flex-grow">
+                                        <button class="w-full bg-gray-50 border border-gray-300 rounded-lg px-4 py-2.5 text-sm text-gray-500 font-medium flex items-center justify-center" disabled>
+                                            <i class="fas fa-cloud-upload-alt mr-2"></i>
+                                            Choose File
+                                        </button>
+                                        <input type="file" disabled />
+                                    </div>
+                                    <button class="bg-gray-400 text-white py-2.5 px-4 rounded-lg text-sm font-medium flex items-center justify-center" disabled>
+                                        <i class="fas fa-upload mr-1.5"></i> Submit
+                                    </button>
+                                </div>
+                            </div>
 
-                    <div class="text-xs text-gray-500">
-                        <p>Approved version submitted on March 10, 2025</p>
+                            <div class="text-xs text-gray-500 mt-3">
+                                <p class="flex items-center">
+                                    <i class="fas fa-check-circle text-green-500 mr-1.5"></i>
+                                    Approved version submitted on March 10, 2025
+                                </p>
+                            </div>
+                        </div>
                     </div>
-                </div>
-                
-                <!-- TOS Upload -->
-                <div class="bg-white rounded-lg shadow p-6 mb-6">
-                    <div class="flex justify-between items-start mb-4">
-                        <div>
-                            <h3 class="font-semibold text-lg text-custom-brown">Table of Specifications (TOS)</h3>
+                    
+                    <!-- TOS Upload -->
+                    <div class="bg-white rounded-xl shadow-sm border border-gray-100 overflow-hidden transition-all duration-300 card-hover relative">
+                        <div class="card-decoration">
+                            <i class="fas fa-table text-custom-brown text-9xl"></i>
+                        </div>
+                        <div class="px-6 py-5 border-b border-gray-100">
+                            <div class="flex justify-between items-center">
+                                <h3 class="font-bold text-lg text-custom-brown flex items-center">
+                                    <i class="fas fa-table mr-2"></i>
+                                    Table of Specifications
+                                </h3>
+                                <span class="status-badge bg-blue-100 text-blue-800">
+                                    <i class="fas fa-spinner fa-spin"></i>
+                                    Under Review
+                                </span>
+                            </div>
                             <p class="text-sm text-gray-500 mt-1">Due: April 10, 2025</p>
                         </div>
-                        <span class="bg-blue-100 text-blue-800 text-xs font-semibold px-2.5 py-0.5 rounded">
-                            Under Review
-                        </span>
-                    </div>
-                    
-                    <div class="mb-4">
-                        <p class="text-sm text-gray-600 mb-2">Status:</p>
-                        <div class="bg-gray-50 p-3 rounded border border-gray-200 text-sm text-gray-700">
-                            <p>Your submission is currently under review by the dean. You will receive feedback soon.</p>
-                        </div>
-                    </div>
-                    
-                    <div class="mb-4">
-                        <label class="block text-sm font-medium text-gray-700 mb-2">Upload New Version:</label>
-                        <div class="flex items-center">
-                            <input type="file" class="flex-grow p-2 text-sm text-gray-500 file:mr-4 file:py-2 file:px-4 file:rounded file:border-0 file:text-sm file:font-semibold file:bg-gray-400 file:text-white hover:file:bg-gray-500" disabled />
-                            <button class="ml-3 bg-gray-400 text-white py-2 px-4 rounded text-sm font-medium" disabled>
-                                <i class="fas fa-upload mr-1"></i> Submit
-                            </button>
-                        </div>
-                    </div>
+                        
+                        <div class="p-6">
+                            <div class="mb-5">
+                                <h4 class="text-sm font-medium text-gray-700 mb-2">Review Progress</h4>
+                                <div class="progress-bar">
+                                    <div class="progress-fill bg-blue-500" style="width: 75%"></div>
+                                </div>
+                                <div class="flex justify-between text-xs text-gray-500 mt-1">
+                                    <span>75% Complete</span>
+                                    <span>Under review since April 06</span>
+                                </div>
+                            </div>
+                            
+                            <div class="mb-5 bg-gray-50 p-4 rounded-lg border border-gray-100">
+                                <h4 class="text-sm font-medium text-gray-700 mb-2">Status:</h4>
+                                <div class="text-sm text-gray-600">
+                                    <div class="flex items-center">
+                                        <i class="fas fa-info-circle text-blue-500 mr-2"></i>
+                                        <p>Your submission is currently under review by the dean. You will receive feedback soon.</p>
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            <div class="mb-2">
+                                <label class="block text-sm font-medium text-gray-700 mb-2">Upload New Version:</label>
+                                <div class="flex flex-col sm:flex-row sm:items-center space-y-3 sm:space-y-0 sm:space-x-3 opacity-50">
+                                    <div class="file-upload flex-grow">
+                                        <button class="w-full bg-gray-50 border border-gray-300 rounded-lg px-4 py-2.5 text-sm text-gray-500 font-medium flex items-center justify-center" disabled>
+                                            <i class="fas fa-cloud-upload-alt mr-2"></i>
+                                            Choose File
+                                        </button>
+                                        <input type="file" disabled />
+                                    </div>
+                                    <button class="bg-gray-400 text-white py-2.5 px-4 rounded-lg text-sm font-medium flex items-center justify-center" disabled>
+                                        <i class="fas fa-upload mr-1.5"></i> Submit
+                                    </button>
+                                </div>
+                            </div>
 
-                    <div class="text-xs text-gray-500">
-                        <p>Last submitted on April 05, 2025</p>
+                            <div class="text-xs text-gray-500 mt-3">
+                                <p class="flex items-center">
+                                    <i class="fas fa-history mr-1.5"></i>
+                                    Last submitted on April 05, 2025
+                                </p>
+                            </div>
+                        </div>
                     </div>
-                </div>
-                
-                <!-- Final Exam Upload -->
-                <div class="bg-white rounded-lg shadow p-6">
-                    <div class="flex justify-between items-start mb-4">
-                        <div>
-                            <h3 class="font-semibold text-lg text-custom-yellow">Final Examination</h3>
+                    
+                    <!-- Final Exam Upload -->
+                    <div class="bg-white rounded-xl shadow-sm border border-gray-100 overflow-hidden transition-all duration-300 card-hover relative">
+                        <div class="card-decoration">
+                            <i class="fas fa-file-alt text-custom-yellow text-9xl"></i>
+                        </div>
+                        <div class="px-6 py-5 border-b border-gray-100">
+                            <div class="flex justify-between items-center">
+                                <h3 class="font-bold text-lg text-custom-yellow flex items-center">
+                                    <i class="fas fa-file-alt mr-2"></i>
+                                    Final Examination
+                                </h3>
+                                <span class="status-badge bg-red-100 text-red-800">
+                                    <i class="fas fa-exclamation-triangle"></i>
+                                    Not Submitted
+                                </span>
+                            </div>
                             <p class="text-sm text-gray-500 mt-1">Due: April 30, 2025</p>
                         </div>
-                        <span class="bg-red-100 text-red-800 text-xs font-semibold px-2.5 py-0.5 rounded">
-                            Not Submitted
-                        </span>
-                    </div>
-                    
-                    <div class="mb-4">
-                        <p class="text-sm text-gray-600 mb-2">Instructions:</p>
-                        <div class="bg-gray-50 p-3 rounded border border-gray-200 text-sm text-gray-700">
-                            <p>Please ensure your exam follows the approved TOS. Include both objective and essay-type questions.</p>
-                        </div>
-                    </div>
-                    
-                    <div class="mb-4">
-                        <label class="block text-sm font-medium text-gray-700 mb-2">Upload Final Exam:</label>
-                        <div class="flex items-center">
-                            <input type="file" class="flex-grow p-2 text-sm text-gray-500 file:mr-4 file:py-2 file:px-4 file:rounded file:border-0 file:text-sm file:font-semibold file:bg-custom-blue file:text-white hover:file:bg-blue-700" />
-                            <button class="ml-3 bg-custom-blue text-white py-2 px-4 rounded hover:bg-opacity-90 text-sm font-medium">
-                                <i class="fas fa-upload mr-1"></i> Submit
-                            </button>
-                        </div>
-                    </div>
+                        
+                        <div class="p-6">
+                            <div class="mb-5">
+                                <h4 class="text-sm font-medium text-gray-700 mb-2">Submission Status</h4>
+                                <div class="progress-bar">
+                                    <div class="progress-fill bg-red-500" style="width: 0%"></div>
+                                </div>
+                                <div class="flex justify-between text-xs text-gray-500 mt-1">
+                                    <span>0% Complete</span>
+                                    <span>5 days remaining</span>
+                                </div>
+                            </div>
+                            
+                            <div class="mb-5 bg-gray-50 p-4 rounded-lg border border-gray-100">
+                                <h4 class="text-sm font-medium text-gray-700 mb-2">Instructions:</h4>
+                                <div class="text-sm text-gray-600">
+                                    <div class="flex items-center">
+                                        <i class="fas fa-info-circle text-custom-yellow mr-2"></i>
+                                        <p>Please ensure your exam follows the approved TOS. Include both objective and essay-type questions.</p>
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            <div class="mb-2">
+                                <label class="block text-sm font-medium text-gray-700 mb-2">Upload Final Exam:</label>
+                                <div class="flex flex-col sm:flex-row sm:items-center space-y-3 sm:space-y-0 sm:space-x-3">
+                                    <div class="file-upload flex-grow">
+                                        <button class="w-full bg-gray-50 border border-gray-300 rounded-lg px-4 py-2.5 text-sm text-gray-500 font-medium hover:bg-gray-100 transition-colors flex items-center justify-center">
+                                            <i class="fas fa-cloud-upload-alt mr-2 text-custom-yellow"></i>
+                                            Choose File
+                                        </button>
+                                        <input type="file" class="cursor-pointer" />
+                                    </div>
+                                    <button class="bg-custom-yellow text-gray-800 py-2.5 px-4 rounded-lg hover:bg-opacity-90 text-sm font-medium transition-colors flex items-center justify-center">
+                                        <i class="fas fa-upload mr-1.5"></i> Submit
+                                    </button>
+                                </div>
+                            </div>
 
-                    <div class="text-xs text-gray-500">
-                        <p>No previous submission</p>
+                            <div class="text-xs text-gray-500 mt-3">
+                                <p class="flex items-center">
+                                    <i class="fas fa-times-circle text-red-500 mr-1.5"></i>
+                                    No previous submission
+                                </p>
+                            </div>
+                        </div>
                     </div>
                 </div>
                 
-                <!-- Quick Actions -->
-                <div class="mt-8">
-                    <div class="flex flex-wrap gap-4">
-                        <a href="faculty-dashboard.html" class="bg-custom-blue text-white py-2 px-4 rounded hover:opacity-90">
-                            <i class="fas fa-arrow-left mr-2"></i> Back to Dashboard
-                        </a>
-                        <a href="faculty-history.html" class="bg-custom-green text-white py-2 px-4 rounded hover:opacity-90">
-                            <i class="fas fa-history mr-2"></i> View History
-                        </a>
-                    </div>
+               <!-- Quick Actions -->
+<div class="mt-8">
+    <h2 class="text-xl font-bold text-gray-800 mb-4">Quick Actions</h2>
+    <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+        <div class="bg-white rounded-lg shadow-sm border border-gray-100 p-5 transition-all duration-300 hover:shadow-md">
+            <div class="flex items-center">
+                <div class="bg-blue-100 p-3 rounded-lg">
+                    <i class="fas fa-download text-custom-blue text-lg"></i>
                 </div>
-            </main>
+                <div class="ml-4">
+                    <h3 class="font-medium text-gray-800">Download Templates</h3>
+                    <p class="text-sm text-gray-500 mt-1">Get standard formats for all deliverables</p>
+                </div>
+            </div>
+            <button class="mt-4 w-full bg-gray-50 border border-gray-200 text-gray-700 py-2 px-4 rounded-lg text-sm font-medium hover:bg-gray-100 transition-colors flex items-center justify-center">
+                <i class="fas fa-file-download mr-1.5"></i> Get Templates
+            </button>
+        </div>
+        
+        <div class="bg-white rounded-lg shadow-sm border border-gray-100 p-5 transition-all duration-300 hover:shadow-md">
+            <div class="flex items-center">
+                <div class="bg-green-100 p-3 rounded-lg">
+                    <i class="fas fa-calendar-check text-custom-green text-lg"></i>
+                </div>
+                <div class="ml-4">
+                    <h3 class="font-medium text-gray-800">View Schedule</h3>
+                    <p class="text-sm text-gray-500 mt-1">Check submission deadlines calendar</p>
+                </div>
+            </div>
+            <button class="mt-4 w-full bg-gray-50 border border-gray-200 text-gray-700 py-2 px-4 rounded-lg text-sm font-medium hover:bg-gray-100 transition-colors flex items-center justify-center">
+                <i class="fas fa-calendar-alt mr-1.5"></i> Open Calendar
+            </button>
+        </div>
+        
+        <div class="bg-white rounded-lg shadow-sm border border-gray-100 p-5 transition-all duration-300 hover:shadow-md">
+            <div class="flex items-center">
+                <div class="bg-yellow-100 p-3 rounded-lg">
+                    <i class="fas fa-question-circle text-custom-yellow text-lg"></i>
+                </div>
+                <div class="ml-4">
+                    <h3 class="font-medium text-gray-800">Need Help?</h3>
+                    <p class="text-sm text-gray-500 mt-1">Contact support or view guidelines</p>
+                </div>
+            </div>
+            <button class="mt-4 w-full bg-gray-50 border border-gray-200 text-gray-700 py-2 px-4 rounded-lg text-sm font-medium hover:bg-gray-100 transition-colors flex items-center justify-center">
+                <i class="fas fa-headset mr-1.5"></i> Get Support
+            </button>
         </div>
     </div>
+</div>
+
+<!-- Recent Activity -->
+<div class="mt-8">
+    <div class="flex items-center justify-between mb-4">
+        <h2 class="text-xl font-bold text-gray-800">Recent Activity</h2>
+        <a href="#" class="text-custom-blue text-sm font-medium hover:underline">View All</a>
+    </div>
+    
+    <div class="bg-white rounded-lg shadow-sm border border-gray-100 overflow-hidden">
+        <ul class="divide-y divide-gray-100">
+            <li class="p-4 hover:bg-gray-50 transition-colors">
+                <div class="flex items-start">
+                    <div class="bg-blue-100 p-2 rounded-full">
+                        <i class="fas fa-comment-alt text-custom-blue"></i>
+                    </div>
+                    <div class="ml-3">
+                        <p class="text-sm font-medium text-gray-800">You received feedback on your Syllabus</p>
+                        <p class="text-xs text-gray-500 mt-1">April 22, 2025 • 3 days ago</p>
+                    </div>
+                </div>
+            </li>
+            <li class="p-4 hover:bg-gray-50 transition-colors">
+                <div class="flex items-start">
+                    <div class="bg-green-100 p-2 rounded-full">
+                        <i class="fas fa-check-circle text-custom-green"></i>
+                    </div>
+                    <div class="ml-3">
+                        <p class="text-sm font-medium text-gray-800">Your SLM was approved by Dean Smith</p>
+                        <p class="text-xs text-gray-500 mt-1">March 18, 2025 • 1 month ago</p>
+                    </div>
+                </div>
+            </li>
+            <li class="p-4 hover:bg-gray-50 transition-colors">
+                <div class="flex items-start">
+                    <div class="bg-blue-100 p-2 rounded-full">
+                        <i class="fas fa-upload text-custom-blue"></i>
+                    </div>
+                    <div class="ml-3">
+                        <p class="text-sm font-medium text-gray-800">You submitted your Table of Specifications</p>
+                        <p class="text-xs text-gray-500 mt-1">April 05, 2025 • 20 days ago</p>
+                    </div>
+                </div>
+            </li>
+        </ul>
+    </div>
+</div>
+
+</main>
+</div>
+</div>
+
+<script>
+    // Mobile menu toggle
+    document.querySelector('button.md\\:hidden').addEventListener('click', function() {
+        const sidebar = document.querySelector('.animated-bg');
+        sidebar.classList.toggle('hidden');
+        sidebar.classList.toggle('fixed');
+        sidebar.classList.toggle('z-50');
+        sidebar.classList.toggle('inset-0');
+    });
+</script>
 </body>
 </html>
