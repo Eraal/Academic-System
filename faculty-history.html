@@ -1,0 +1,284 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Submission History - Academic Deliverables System</title>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/tailwindcss/2.2.19/tailwind.min.css" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css" rel="stylesheet">
+    <style>
+        .bg-custom-blue { background-color: #2A4E92; }
+        .bg-custom-brown { background-color: #723E2C; }
+        .bg-custom-green { background-color: #51B63F; }
+        .bg-custom-light-blue { background-color: #62BEE3; }
+        .bg-custom-yellow { background-color: #FAC801; }
+        .text-custom-blue { color: #2A4E92; }
+        .text-custom-brown { color: #723E2C; }
+        .text-custom-green { color: #51B63F; }
+        .text-custom-light-blue { color: #62BEE3; }
+        .text-custom-yellow { color: #FAC801; }
+        .border-custom-blue { border-color: #2A4E92; }
+        .border-custom-green { border-color: #51B63F; }
+        .border-custom-yellow { border-color: #FAC801; }
+        .border-custom-brown { border-color: #723E2C; }
+    </style>
+</head>
+<body class="bg-gray-100">
+    <div class="flex h-screen">
+        <!-- Sidebar -->
+        <div class="bg-custom-blue text-white w-64 flex-shrink-0 hidden md:block">
+            <div class="p-4 text-center border-b border-blue-700">
+                <h2 class="font-bold text-xl">Academic System</h2>
+                <p class="text-sm text-custom-yellow mt-1">Role: Faculty</p>
+            </div>
+            <nav class="mt-6">
+                <ul>
+                    <li class="mb-1">
+                        <a href="faculty-dashboard.html" class="block py-3 px-4 hover:bg-blue-800 transition-colors">
+                            <i class="fas fa-tachometer-alt mr-2"></i> Dashboard
+                        </a>
+                    </li>
+                    <li class="mb-1">
+                        <a href="faculty-upload.html" class="block py-3 px-4 hover:bg-blue-800 transition-colors">
+                            <i class="fas fa-upload mr-2"></i> Upload Deliverables
+                        </a>
+                    </li>
+                    <li class="mb-1">
+                        <a href="faculty-history.html" class="block py-3 px-4 bg-blue-800 transition-colors">
+                            <i class="fas fa-history mr-2"></i> Submission History
+                        </a>
+                    </li>
+                    <li class="mb-1">
+                        <a href="loginpage.html" class="block py-3 px-4 hover:bg-blue-800 transition-colors">
+                            <i class="fas fa-sign-out-alt mr-2"></i> Logout
+                        </a>
+                    </li>
+                </ul>
+            </nav>
+        </div>
+
+        <!-- Main Content -->
+        <div class="flex-1 flex flex-col overflow-hidden">
+            <!-- Top Navigation -->
+            <header class="bg-white shadow-sm">
+                <div class="flex items-center justify-between p-4">
+                    <div class="flex items-center">
+                        <button class="md:hidden mr-4 text-gray-600">
+                            <i class="fas fa-bars"></i>
+                        </button>
+                        <h1 class="text-xl font-semibold text-gray-800">Submission History</h1>
+                    </div>
+                    <div>
+                        <span class="bg-custom-green text-white py-1 px-3 rounded-full text-sm">
+                            Faculty
+                        </span>
+                    </div>
+                </div>
+            </header>
+
+            <!-- Content Area -->
+            <main class="flex-1 overflow-y-auto p-6">
+                <!-- Filters -->
+                <div class="mb-6 bg-white p-4 rounded shadow">
+                    <div class="flex flex-col md:flex-row md:items-center md:justify-between">
+                        <div class="flex flex-col md:flex-row md:items-center mb-4 md:mb-0">
+                            <label class="mr-3 mb-2 md:mb-0 font-medium">Filter by:</label>
+                            <select class="border rounded p-2 mr-3 mb-2 md:mb-0">
+                                <option>All Deliverables</option>
+                                <option>Syllabus</option>
+                                <option>SLM</option>
+                                <option>TOS</option>
+                                <option>Exams</option>
+                            </select>
+                            <select class="border rounded p-2 mr-3 mb-2 md:mb-0">
+                                <option>All Status</option>
+                                <option>Submitted</option>
+                                <option>Approved</option>
+                                <option>Needs Revision</option>
+                            </select>
+                        </div>
+                        <div class="flex items-center">
+                            <input type="text" placeholder="Search courses" class="border rounded p-2 w-full">
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Timeline View -->
+                <div class="bg-white rounded shadow mb-6">
+                    <div class="border-b p-4">
+                        <h2 class="text-lg font-semibold">Timeline View</h2>
+                    </div>
+                    
+                    <div class="p-6">
+                        <!-- Timeline -->
+                        <div class="relative">
+                            <!-- Vertical Line -->
+                            <div class="absolute left-5 top-0 bottom-0 w-0.5 bg-gray-300"></div>
+                            
+                            <!-- Timeline Item 1 -->
+                            <div class="flex mb-8 relative">
+                                <div class="flex-shrink-0 w-10 h-10 rounded-full bg-custom-green flex items-center justify-center z-10">
+                                    <i class="fas fa-check text-white"></i>
+                                </div>
+                                <div class="ml-6">
+                                    <div class="bg-gray-50 p-4 rounded shadow-sm border-l-4 border-custom-green">
+                                        <div class="flex flex-col md:flex-row md:items-center md:justify-between mb-2">
+                                            <h3 class="font-medium">CS 101 Syllabus - Approved</h3>
+                                            <span class="text-sm text-gray-500">April 15, 2025 • 2:30 PM</span>
+                                        </div>
+                                        <p class="text-gray-600 mb-3">Your CS 101 Syllabus has been approved by the Dean.</p>
+                                        <div class="text-sm text-custom-blue">
+                                            <i class="fas fa-comment-alt mr-1"></i> Feedback: "Excellent work. Well structured and follows all guidelines."
+                                        </div>
+                                        <div class="mt-3">
+                                            <button class="text-custom-blue hover:underline text-sm mr-3">
+                                                <i class="fas fa-download mr-1"></i> Download
+                                            </button>
+                                            <button class="text-custom-blue hover:underline text-sm">
+                                                <i class="fas fa-eye mr-1"></i> View
+                                            </button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            <!-- Timeline Item 2 -->
+                            <div class="flex mb-8 relative">
+                                <div class="flex-shrink-0 w-10 h-10 rounded-full bg-custom-brown flex items-center justify-center z-10">
+                                    <i class="fas fa-undo text-white"></i>
+                                </div>
+                                <div class="ml-6">
+                                    <div class="bg-gray-50 p-4 rounded shadow-sm border-l-4 border-custom-brown">
+                                        <div class="flex flex-col md:flex-row md:items-center md:justify-between mb-2">
+                                            <h3 class="font-medium">CS 205 SLM - Needs Revision</h3>
+                                            <span class="text-sm text-gray-500">April 12, 2025 • 11:15 AM</span>
+                                        </div>
+                                        <p class="text-gray-600 mb-3">Your CS 205 SLM requires revision before approval.</p>
+                                        <div class="text-sm text-custom-brown">
+                                            <i class="fas fa-comment-alt mr-1"></i> Feedback: "Please include more examples for Chapter 3. The content is well written but needs additional practical exercises."
+                                        </div>
+                                        <div class="mt-3">
+                                            <button class="text-custom-blue hover:underline text-sm mr-3">
+                                                <i class="fas fa-download mr-1"></i> Download
+                                            </button>
+                                            <button class="text-custom-blue hover:underline text-sm mr-3">
+                                                <i class="fas fa-eye mr-1"></i> View
+                                            </button>
+                                            <button class="bg-custom-blue text-white px-3 py-1 rounded text-sm">
+                                                <i class="fas fa-upload mr-1"></i> Upload Revision
+                                            </button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            <!-- Timeline Item 3 -->
+                            <div class="flex mb-8 relative">
+                                <div class="flex-shrink-0 w-10 h-10 rounded-full bg-custom-yellow flex items-center justify-center z-10">
+                                    <i class="fas fa-paper-plane text-custom-blue"></i>
+                                </div>
+                                <div class="ml-6">
+                                    <div class="bg-gray-50 p-4 rounded shadow-sm border-l-4 border-custom-yellow">
+                                        <div class="flex flex-col md:flex-row md:items-center md:justify-between mb-2">
+                                            <h3 class="font-medium">CS 101 TOS - Submitted</h3>
+                                            <span class="text-sm text-gray-500">April 10, 2025 • 9:45 AM</span>
+                                        </div>
+                                        <p class="text-gray-600 mb-3">Your CS 101 Table of Specifications has been submitted successfully and is pending review.</p>
+                                        <div class="mt-3">
+                                            <button class="text-custom-blue hover:underline text-sm mr-3">
+                                                <i class="fas fa-download mr-1"></i> Download
+                                            </button>
+                                            <button class="text-custom-blue hover:underline text-sm">
+                                                <i class="fas fa-eye mr-1"></i> View
+                                            </button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            <!-- Timeline Item 4 -->
+                            <div class="flex relative">
+                                <div class="flex-shrink-0 w-10 h-10 rounded-full bg-custom-green flex items-center justify-center z-10">
+                                    <i class="fas fa-check text-white"></i>
+                                </div>
+                                <div class="ml-6">
+                                    <div class="bg-gray-50 p-4 rounded shadow-sm border-l-4 border-custom-green">
+                                        <div class="flex flex-col md:flex-row md:items-center md:justify-between mb-2">
+                                            <h3 class="font-medium">CS 205 Syllabus - Approved</h3>
+                                            <span class="text-sm text-gray-500">April 5, 2025 • 1:20 PM</span>
+                                        </div>
+                                        <p class="text-gray-600 mb-3">Your CS 205 Syllabus has been approved by the Dean.</p>
+                                        <div class="text-sm text-custom-blue">
+                                            <i class="fas fa-comment-alt mr-1"></i> Feedback: "Great work. Well organized and comprehensive."
+                                        </div>
+                                        <div class="mt-3">
+                                            <button class="text-custom-blue hover:underline text-sm mr-3">
+                                                <i class="fas fa-download mr-1"></i> Download
+                                            </button>
+                                            <button class="text-custom-blue hover:underline text-sm">
+                                                <i class="fas fa-eye mr-1"></i> View
+                                            </button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Version History for Selected Item -->
+                <div class="bg-white rounded shadow">
+                    <div class="border-b p-4">
+                        <h2 class="text-lg font-semibold">CS 205 SLM - Version History</h2>
+                    </div>
+                    <div class="p-4">
+                        <div class="overflow-x-auto">
+                            <table class="min-w-full bg-white">
+                                <thead>
+                                    <tr>
+                                        <th class="px-6 py-3 border-b-2 border-gray-200 bg-gray-50 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider">Version</th>
+                                        <th class="px-6 py-3 border-b-2 border-gray-200 bg-gray-50 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider">Date</th>
+                                        <th class="px-6 py-3 border-b-2 border-gray-200 bg-gray-50 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider">Status</th>
+                                        <th class="px-6 py-3 border-b-2 border-gray-200 bg-gray-50 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider">Feedback</th>
+                                        <th class="px-6 py-3 border-b-2 border-gray-200 bg-gray-50 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider">Actions</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr>
+                                        <td class="px-6 py-4 whitespace-nowrap border-b border-gray-200">v2.0</td>
+                                        <td class="px-6 py-4 whitespace-nowrap border-b border-gray-200">April 12, 2025</td>
+                                        <td class="px-6 py-4 whitespace-nowrap border-b border-gray-200">
+                                            <span class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-custom-brown text-white">Needs Revision</span>
+                                        </td>
+                                        <td class="px-6 py-4 border-b border-gray-200">
+                                            <div class="text-sm text-gray-900">Please include more examples for Chapter 3...</div>
+                                        </td>
+                                        <td class="px-6 py-4 whitespace-nowrap border-b border-gray-200 text-sm">
+                                            <button class="text-custom-blue hover:underline mr-3"><i class="fas fa-download"></i> Download</button>
+                                            <button class="text-custom-blue hover:underline"><i class="fas fa-eye"></i> View</button>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td class="px-6 py-4 whitespace-nowrap border-b border-gray-200">v1.0</td>
+                                        <td class="px-6 py-4 whitespace-nowrap border-b border-gray-200">April 8, 2025</td>
+                                        <td class="px-6 py-4 whitespace-nowrap border-b border-gray-200">
+                                            <span class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-custom-brown text-white">Needs Revision</span>
+                                        </td>
+                                        <td class="px-6 py-4 border-b border-gray-200">
+                                            <div class="text-sm text-gray-900">Missing assessment strategies in Chapter 2...</div>
+                                        </td>
+                                        <td class="px-6 py-4 whitespace-nowrap border-b border-gray-200 text-sm">
+                                            <button class="text-custom-blue hover:underline mr-3"><i class="fas fa-download"></i> Download</button>
+                                            <button class="text-custom-blue hover:underline"><i class="fas fa-eye"></i> View</button>
+                                        </td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </main>
+        </div>
+    </div>
+</body>
+</html>

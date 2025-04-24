@@ -1,0 +1,221 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Review Submissions - Academic Deliverables System</title>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/tailwindcss/2.2.19/tailwind.min.css" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css" rel="stylesheet">
+    <style>
+        .bg-custom-blue { background-color: #2A4E92; }
+        .bg-custom-brown { background-color: #723E2C; }
+        .bg-custom-green { background-color: #51B63F; }
+        .bg-custom-light-blue { background-color: #62BEE3; }
+        .bg-custom-yellow { background-color: #FAC801; }
+        .text-custom-blue { color: #2A4E92; }
+        .text-custom-brown { color: #723E2C; }
+        .text-custom-green { color: #51B63F; }
+        .text-custom-light-blue { color: #62BEE3; }
+        .text-custom-yellow { color: #FAC801; }
+        .border-custom-blue { border-color: #2A4E92; }
+    </style>
+</head>
+<body class="bg-gray-100">
+    <div class="flex h-screen">
+        <!-- Sidebar -->
+        <div class="bg-custom-blue text-white w-64 flex-shrink-0 hidden md:block">
+            <div class="p-4 text-center border-b border-blue-700">
+                <h2 class="font-bold text-xl">Academic System</h2>
+                <p class="text-sm text-custom-yellow mt-1">Role: Dean</p>
+            </div>
+            <nav class="mt-6">
+                <ul>
+                    <li class="mb-1">
+                        <a href="dean-dashboard.html" class="block py-3 px-4 hover:bg-blue-800 transition-colors">
+                            <i class="fas fa-tachometer-alt mr-2"></i> Dashboard
+                        </a>
+                    </li>
+                    <li class="mb-1">
+                        <a href="dean-review.html" class="block py-3 px-4 bg-blue-800 transition-colors">
+                            <i class="fas fa-clipboard-check mr-2"></i> Review Submissions
+                        </a>
+                    </li>
+                    <li class="mb-1">
+                        <a href="loginpage.html" class="block py-3 px-4 hover:bg-blue-800 transition-colors">
+                            <i class="fas fa-sign-out-alt mr-2"></i> Logout
+                        </a>
+                    </li>
+                </ul>
+            </nav>
+        </div>
+
+        <!-- Main Content -->
+        <div class="flex-1 flex flex-col overflow-hidden">
+            <!-- Top Navigation -->
+            <header class="bg-white shadow-sm">
+                <div class="flex items-center justify-between p-4">
+                    <div class="flex items-center">
+                        <button class="md:hidden mr-4 text-gray-600">
+                            <i class="fas fa-bars"></i>
+                        </button>
+                        <h1 class="text-xl font-semibold text-gray-800">Review Submissions</h1>
+                    </div>
+                    <div>
+                        <span class="bg-custom-blue text-white py-1 px-3 rounded-full text-sm">
+                            Dean
+                        </span>
+                    </div>
+                </div>
+            </header>
+
+            <!-- Content Area -->
+            <main class="flex-1 overflow-y-auto p-6">
+                <!-- Filters -->
+                <div class="mb-6 bg-white p-4 rounded shadow">
+                    <div class="flex flex-col md:flex-row md:items-center md:justify-between">
+                        <div class="flex flex-col md:flex-row md:items-center mb-4 md:mb-0">
+                            <label class="mr-3 mb-2 md:mb-0 font-medium">Filter by:</label>
+                            <select class="border rounded p-2 mr-3 mb-2 md:mb-0">
+                                <option>All Deliverables</option>
+                                <option>Syllabus</option>
+                                <option>SLM</option>
+                                <option>TOS</option>
+                                <option>Exams</option>
+                            </select>
+                            <select class="border rounded p-2 mr-3 mb-2 md:mb-0">
+                                <option>All Status</option>
+                                <option>Submitted</option>
+                                <option>Approved</option>
+                                <option>Needs Revision</option>
+                            </select>
+                        </div>
+                        <div class="flex items-center">
+                            <input type="text" placeholder="Search faculty" class="border rounded p-2 w-full">
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Current Review Item -->
+                <div class="bg-white rounded shadow mb-6">
+                    <div class="bg-custom-blue text-white p-4 rounded-t">
+                        <div class="flex flex-col md:flex-row md:items-center md:justify-between">
+                            <div>
+                                <h2 class="text-xl font-semibold">Course Syllabus - CS 101</h2>
+                                <p class="text-sm">Submitted by: Dr. Jane Smith | April 20, 2025</p>
+                            </div>
+                            <span class="inline-block bg-custom-yellow text-custom-blue font-semibold px-3 py-1 rounded-full mt-2 md:mt-0">Pending Review</span>
+                        </div>
+                    </div>
+                    
+                    <div class="p-6">
+                        <div class="mb-6">
+                            <h3 class="text-lg font-semibold mb-3">Document Preview</h3>
+                            <div class="border rounded p-4 bg-gray-50 h-64 flex items-center justify-center">
+                                <div class="text-center">
+                                    <i class="far fa-file-pdf text-custom-brown text-5xl mb-3"></i>
+                                    <p class="font-medium">CS101_Syllabus_Spring2025.pdf</p>
+                                    <p class="text-sm text-gray-500">1.2 MB - Uploaded April 20, 2025</p>
+                                    <button class="mt-3 bg-custom-blue text-white px-4 py-2 rounded hover:bg-blue-700">
+                                        <i class="fas fa-download mr-1"></i> Download
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="mb-6">
+                            <h3 class="text-lg font-semibold mb-3">Review Comments</h3>
+                            <textarea class="w-full border rounded p-3 h-36" placeholder="Enter your feedback or revision requests here..."></textarea>
+                        </div>
+
+                        <div class="flex flex-col md:flex-row md:justify-between">
+                            <div class="mb-4 md:mb-0">
+                                <button class="bg-custom-green text-white px-6 py-2 rounded mr-2 hover:bg-green-600">
+                                    <i class="fas fa-check mr-1"></i> Approve
+                                </button>
+                                <button class="bg-custom-brown text-white px-6 py-2 rounded hover:bg-red-700">
+                                    <i class="fas fa-undo mr-1"></i> Request Revision
+                                </button>
+                            </div>
+                            <button class="text-custom-blue hover:underline">
+                                <i class="fas fa-history mr-1"></i> View Revision History
+                            </button>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Pending Review List -->
+                <div class="bg-white rounded shadow">
+                    <div class="bg-gray-100 p-4 border-b">
+                        <h3 class="font-semibold">Other Pending Reviews (4)</h3>
+                    </div>
+                    <div class="divide-y">
+                        <!-- Review Item 1 -->
+                        <div class="p-4 hover:bg-gray-50 cursor-pointer">
+                            <div class="flex flex-col md:flex-row md:items-center md:justify-between">
+                                <div>
+                                    <h4 class="font-medium">SLM - Mathematics 202</h4>
+                                    <p class="text-sm text-gray-600">Dr. Robert Johnson | April 19, 2025</p>
+                                </div>
+                                <div class="flex items-center mt-2 md:mt-0">
+                                    <span class="bg-custom-yellow text-custom-blue px-3 py-1 rounded-full text-sm font-medium">Pending</span>
+                                    <button class="ml-3 text-custom-blue hover:underline text-sm">
+                                        <i class="fas fa-eye"></i> Review
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <!-- Review Item 2 -->
+                        <div class="p-4 hover:bg-gray-50 cursor-pointer">
+                            <div class="flex flex-col md:flex-row md:items-center md:justify-between">
+                                <div>
+                                    <h4 class="font-medium">TOS - Biology 110</h4>
+                                    <p class="text-sm text-gray-600">Dr. Maria Garcia | April 18, 2025</p>
+                                </div>
+                                <div class="flex items-center mt-2 md:mt-0">
+                                    <span class="bg-custom-yellow text-custom-blue px-3 py-1 rounded-full text-sm font-medium">Pending</span>
+                                    <button class="ml-3 text-custom-blue hover:underline text-sm">
+                                        <i class="fas fa-eye"></i> Review
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <!-- Review Item 3 -->
+                        <div class="p-4 hover:bg-gray-50 cursor-pointer">
+                            <div class="flex flex-col md:flex-row md:items-center md:justify-between">
+                                <div>
+                                    <h4 class="font-medium">Exams - Physics 301</h4>
+                                    <p class="text-sm text-gray-600">Dr. Thomas Lee | April 18, 2025</p>
+                                </div>
+                                <div class="flex items-center mt-2 md:mt-0">
+                                    <span class="bg-custom-light-blue text-white px-3 py-1 rounded-full text-sm font-medium">Resubmitted</span>
+                                    <button class="ml-3 text-custom-blue hover:underline text-sm">
+                                        <i class="fas fa-eye"></i> Review
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <!-- Review Item 4 -->
+                        <div class="p-4 hover:bg-gray-50 cursor-pointer">
+                            <div class="flex flex-col md:flex-row md:items-center md:justify-between">
+                                <div>
+                                    <h4 class="font-medium">Syllabus - English 205</h4>
+                                    <p class="text-sm text-gray-600">Dr. Sarah Williams | April 17, 2025</p>
+                                </div>
+                                <div class="flex items-center mt-2 md:mt-0">
+                                    <span class="bg-custom-yellow text-custom-blue px-3 py-1 rounded-full text-sm font-medium">Pending</span>
+                                    <button class="ml-3 text-custom-blue hover:underline text-sm">
+                                        <i class="fas fa-eye"></i> Review
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </main>
+        </div>
+    </div>
+</body>
+</html>
